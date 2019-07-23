@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "415088376721",
+    "firebase_url": "https://dreamoney-57f5f-580ed.firebaseio.com",
+    "project_id": "dreamoney-57f5f",
+    "storage_bucket": "dreamoney-57f5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415088376721:android:2c5ceadbebabb6e3",
+        "android_client_info": {
+          "package_name": "com.example.dram1y"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415088376721-8ll5h1i5jerfvpsltgtv2gjfdevv11ii.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-anGdKFQcmKH_Ys8d59IaLaBCAEqStRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415088376721-8ll5h1i5jerfvpsltgtv2gjfdevv11ii.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
