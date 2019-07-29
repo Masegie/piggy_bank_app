@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'dart:async' show Future, Stream, StreamSubscription;
 import 'package:dram1y/models/user.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/global_blocs/bloc_base.dart';
@@ -15,10 +14,13 @@ class UserBloc implements BlocBase{
   Function(User) get _inUser => _userController.sink.add;
   Stream<User> get outUser => _userController.stream;
 
+  Stream<int> get outMaxMoney => outUser.map((user) => user.maxMoneyPerDay);
+
   Future<void> init() async {
+    await FirestoreUserService.checkAndCreateUser();
     await FirestoreUserService.updateLastLoggedIn();
     final userStream = await FirestoreUserService.getUserStream();
-    userStream.listen((doc) {
+    _userStreamSubscription = userStream.listen((doc) {
       _user = User.fromDb(doc.data);
       _inUser(_user);
     });

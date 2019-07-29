@@ -3,24 +3,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class User{
   static const lastLoggendInField = 'lastLoggedIn';
   static const moneyPerDayField = 'moneyPerDay';
+  static const maxMoneyPerDayField = 'maxMoneyPerDay';
 
-  User(this.lastLoggedIn, this.moneyPerDay);
+  User(this.lastLoggedIn, this.maxMoneyPerDay);
   
   User.temp(){
     this.lastLoggedIn = DateTime.now();
-    this.moneyPerDay = 0;
+    this.maxMoneyPerDay = 0;
   }
   User.fromDb(Map<String, dynamic> json){
-    this.moneyPerDay = json[moneyPerDayField];
+    this.maxMoneyPerDay = json[maxMoneyPerDayField];
     this.lastLoggedIn = json[lastLoggendInField].toDate();
   }
 
   Map<String, dynamic> toJson(){
     return{
       lastLoggendInField: Timestamp.fromDate(this.lastLoggedIn),
-      moneyPerDayField: this.moneyPerDay,
+      maxMoneyPerDayField: this.maxMoneyPerDay,
     };
   }
-  int moneyPerDay;
   DateTime lastLoggedIn;
+  int maxMoneyPerDay;
 }

@@ -20,6 +20,7 @@ class Dreamoney extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Teman Menabungku',
         theme: ThemeData(
           primarySwatch: Colors.blue,
