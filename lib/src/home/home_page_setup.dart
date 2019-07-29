@@ -1,5 +1,6 @@
 import 'package:dram1y/models/user.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
+import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/home/page_container.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +18,11 @@ class _HomePageSetupState extends State<HomePageSetup> {
     super.initState();
     // cek dan buat user
     // inisiasi bloc
-    Future.delayed(Duration.zero,() async{
+    Future.delayed(Duration.zero, () async {
         final userBloc = Provider.of<UserBloc>(context);
-
-        await FirestoreUserService.checkAndCreateUser();
+        final depositBloc = Provider.of<DepositBloc>(context);
         await userBloc.init();
+        await depositBloc.init();
       }
     );
   }
