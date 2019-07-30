@@ -23,10 +23,17 @@ class DepositPage extends StatelessWidget {
                     initialData: 0,
                     builder: (context, snapshot) {
                       final maxMoney = snapshot.data;
-                      return Text(
-                        'Rp 0/Rp.$maxMoney',
-                        style: Theme.of(context).textTheme.title,
-                        );
+                      return StreamBuilder<int>(
+                        stream: depositBloc.outDepositsAmount,
+                        initialData: 0,
+                        builder: (context, snapshot) {
+                          final moneyAmount = snapshot.data;
+                          return Text(
+                            'Rp 0/Rp.$maxMoney',
+                            style: Theme.of(context).textTheme.title,
+                          );
+                        },
+                      );
                     }
                   ),
                 ),
@@ -49,7 +56,16 @@ class DepositPage extends StatelessWidget {
                 return ListView.builder(
                   itemCount: deposits.length,
                   itemBuilder: (context,index){
-                    return Text(deposits[index].amount.toString());
+                    final deposit = deposits[index];
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200
+                      ),
+                      child: ListTile(
+                        title: Text(deposit.amount.toString()),
+                        subtitle: Text(deposit.date.toString().substring(0,10)),
+                      ),
+                    );
                   },
                 );
               },

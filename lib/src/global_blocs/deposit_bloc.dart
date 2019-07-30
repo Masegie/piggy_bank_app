@@ -15,6 +15,13 @@ class DepositBloc implements BlocBase{
   Function(List<Deposit>) get _inDeposits => _depositController.sink.add;
   Stream<List<Deposit>> get outDeposits => _depositController.stream;
 
+  Stream<int> get outDepositsAmount => outDeposits.map((deposits){
+    int totalValue=0;
+    for(Deposit deposit in deposits) {
+      totalValue += deposit.amount;
+    }
+  });
+
   Future<void> init() async {
     final depositStream = await FirestoreDepositService.getDepositStream(DateTime.now());
     _depositStreamSubscription = depositStream.listen((querySnapshot) {
