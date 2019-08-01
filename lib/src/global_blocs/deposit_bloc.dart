@@ -1,15 +1,13 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dram1y/models/deposit.dart';
-import 'package:dram1y/models/user.dart';
 import 'package:dram1y/service/firestore/firestore_deposit_service.dart';
-import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/global_blocs/bloc_base.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DepositBloc implements BlocBase{
   StreamSubscription _depositStreamSubscription;
   List<Deposit> _depositsToday = List();
+  int _selectedMoneyAmount = 200;
 
   final _depositController = BehaviorSubject<List<Deposit>>();
   Function(List<Deposit>) get _inDeposits => _depositController.sink.add;
@@ -20,6 +18,7 @@ class DepositBloc implements BlocBase{
     for(Deposit deposit in deposits) {
       totalValue += deposit.amount;
     }
+    return totalValue;
   });
 
   Future<void> init() async {
@@ -28,6 +27,11 @@ class DepositBloc implements BlocBase{
       _depositsToday = querySnapshot.documents.map((doc) => Deposit.fromDb(doc.data)).toList();
       _inDeposits(_depositsToday);
     });
+  }
+
+  Future<void> depositMoney() async {
+    final deposit = Deposit(DateTime.now(), _selectedMoneyAmount);
+    FirestoreDepositService.depositMoney(deposit);
   }
 
   @override

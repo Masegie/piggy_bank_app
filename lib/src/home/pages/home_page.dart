@@ -1,4 +1,5 @@
 import 'package:dram1y/models/deposit.dart';
+import 'package:dram1y/src/widgets/money_entry_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
@@ -29,7 +30,7 @@ class DepositPage extends StatelessWidget {
                         builder: (context, snapshot) {
                           final moneyAmount = snapshot.data;
                           return Text(
-                            'Rp 0/Rp.$maxMoney',
+                            'Rp. $moneyAmount/Rp.$maxMoney',
                             style: Theme.of(context).textTheme.title,
                           );
                         },
@@ -37,12 +38,13 @@ class DepositPage extends StatelessWidget {
                     }
                   ),
                 ),
-                CircleAvatar(
-                  radius: 84,
-                  backgroundColor: Colors.greenAccent,
+                InkWell(
+                  onTap: () => depositBloc.depositMoney(),
+                    child: CircleAvatar(
+                    radius: 84,
+                    backgroundColor: Colors.greenAccent,
+                  ),
                 ),
-                // circle container with button
-                //text
               ],
             )
           ),
@@ -57,15 +59,7 @@ class DepositPage extends StatelessWidget {
                   itemCount: deposits.length,
                   itemBuilder: (context,index){
                     final deposit = deposits[index];
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200
-                      ),
-                      child: ListTile(
-                        title: Text(deposit.amount.toString()),
-                        subtitle: Text(deposit.date.toString().substring(0,10)),
-                      ),
-                    );
+                    return new MoneyEntryTile(deposit: deposit);
                   },
                 );
               },

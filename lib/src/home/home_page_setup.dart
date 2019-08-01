@@ -1,5 +1,4 @@
 import 'package:dram1y/models/user.dart';
-import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/home/page_container.dart';
@@ -22,7 +21,7 @@ class _HomePageSetupState extends State<HomePageSetup> {
         final userBloc = Provider.of<UserBloc>(context);
         final depositBloc = Provider.of<DepositBloc>(context);
         await userBloc.init();
-        await depositBloc.init();
+        await depositBloc.init;
       }
     );
   }
