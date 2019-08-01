@@ -21,7 +21,7 @@ class MoneyTodayLabel extends StatelessWidget {
           final maxMoney = snapshot.data;
           return StreamBuilder<int>(
             stream: depositBloc.outDepositsAmount,
-            initialData: 0,
+            initialData: 90,
             builder: (context, snapshot) {
               final moneyAmount = snapshot.data;
               return Text(

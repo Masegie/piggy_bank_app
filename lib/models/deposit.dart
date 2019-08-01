@@ -17,10 +17,16 @@ class Deposit{
 
   Map<String, dynamic> toJson(){
     return{
-      dateField: Timestamp.fromDate(this.date),
       amountField: this.amount,
+      dateField: Timestamp.fromDate(this.date),
     };
   }
+
+  // @override
+  // String toString(){
+  //   return 'amount: $amount,date: $date';
+  // }
+
   DateTime date;
   int amount;
 }

@@ -7,19 +7,23 @@ import 'package:rxdart/rxdart.dart';
 class DepositBloc implements BlocBase{
   StreamSubscription _depositStreamSubscription;
   List<Deposit> _depositsToday = List();
-  int _selectedMoneyAmount = 200;
+  int _selectedMoneyAmount = 100;
 
   final _depositController = BehaviorSubject<List<Deposit>>();
   Function(List<Deposit>) get _inDeposits => _depositController.sink.add;
   Stream<List<Deposit>> get outDeposits => _depositController.stream;
 
-  Stream<int> get outDepositsAmount => outDeposits.map((deposits){
-    int totalValue=0;
-    for(Deposit deposit in deposits) {
-      totalValue += deposit.amount;
-    }
-    return totalValue;
-  });
+   Stream<int> get outDepositsAmount {
+    return outDeposits.map((deposits) => deposits.fold<int>(0, (totalAmount, deposit) => totalAmount + deposit.amount));
+  }
+
+  // Stream<int> get outDepositsAmount => outDeposits.map((deposits){
+  //   int totalValue=0;
+  //   for(Deposit deposit in deposits) {
+  //     totalValue += deposit.amount;
+  //   }
+  //   return totalValue;
+  // });
 
   Future<void> init() async {
     final depositStream = await FirestoreDepositService.getDepositStream(DateTime.now());
