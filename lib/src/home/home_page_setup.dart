@@ -21,7 +21,7 @@ class _HomePageSetupState extends State<HomePageSetup> {
         final userBloc = Provider.of<UserBloc>(context);
         final depositBloc = Provider.of<DepositBloc>(context);
         await userBloc.init();
-        await depositBloc.init;
+        await depositBloc.init();
       }
     );
   }
