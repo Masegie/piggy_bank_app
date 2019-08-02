@@ -13,24 +13,30 @@ class DepositBloc implements BlocBase{
   Function(List<Deposit>) get _inDeposits => _depositController.sink.add;
   Stream<List<Deposit>> get outDeposits => _depositController.stream;
 
-  //  Stream<int> get outDepositsAmount {
-  //   return outDeposits.map((deposits) => deposits.fold<int>(0, (totalAmount, deposit) => totalAmount + deposit.amount));
-  // }
+  final _selectedDepositAmountController = BehaviorSubject<int>();
+  Function(int) get _inSelectedAmount => _selectedDepositAmountController.sink.add;
+  Stream<int> get outSelectedAmount => _selectedDepositAmountController.stream;
+  
+   Stream<int> get outDepositsAmount {
+    return outDeposits.map((deposits) => deposits.fold<int>(0, (totalAmount, deposit) => totalAmount + deposit.amount));
+  }
 
-  Stream<int> get outDepositsAmount => outDeposits.map((deposits){
-    int totalValue=0;
-    for(Deposit deposit in deposits) {
-      totalValue += deposit.amount;
-    }
-    return totalValue;
-  });
+  // Stream<int> get outDepositsAmount => outDeposits.map((deposits){
+  //   int totalValue=0;
+  //   for(Deposit deposit in deposits) {
+  //     totalValue += deposit.amount;
+  //   }
+  //   return totalValue;
+  // });
 
   Future<void> init() async {
     final depositStream = await FirestoreDepositService.getDepositStream(DateTime.now());
     _depositStreamSubscription = depositStream.listen((querySnapshot) {
-      _depositsToday = querySnapshot.documents.map((doc) => Deposit.fromDb(doc.data)).toList();
+      _depositsToday = querySnapshot.documents.map((doc) => Deposit.fromDb(doc.data,doc.documentID)).toList();
       _inDeposits(_depositsToday);
     });
+
+    _inSelectedAmount(_selectedMoneyAmount);
   }
 
   Future<void> depositMoney() async {
@@ -38,9 +44,14 @@ class DepositBloc implements BlocBase{
     FirestoreDepositService.depositMoney(deposit);
   }
 
+  Future<void> removeDeposit(Deposit deposit) async {
+    FirestoreDepositService.removeDeposit(deposit);
+  }
+
   @override
   void dispose(){
     _depositController.close();
+    _selectedDepositAmountController.close();
     _depositStreamSubscription.cancel();
   }
 }

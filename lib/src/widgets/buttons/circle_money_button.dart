@@ -63,7 +63,6 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
             initialData: 1,
             builder: (context, snapshot) {
               final moneySaved= snapshot.data;
-              print(moneySaved / totalMoney);
               _animationController.animateTo(moneySaved/totalMoney );
               return AnimatedBuilder(
                 animation: _curveAnimation,

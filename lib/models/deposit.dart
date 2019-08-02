@@ -10,7 +10,8 @@ class Deposit{
     this.date = DateTime.now();
     this.amount = 0;
   }
-  Deposit.fromDb(Map<String, dynamic> json){
+  Deposit.fromDb(Map<String, dynamic> json,String id){
+    this.id = id;
     this.amount = json[amountField];
     this.date = json[dateField].toDate();
   }
@@ -22,11 +23,12 @@ class Deposit{
     };
   }
 
-  // @override
-  // String toString(){
-  //   return 'amount: $amount,date: $date';
-  // }
-
+  @override
+  String toString(){
+    return 'amount: $amount,date: $date';
+  }
+  
+  String id;
   DateTime date;
   int amount;
 }

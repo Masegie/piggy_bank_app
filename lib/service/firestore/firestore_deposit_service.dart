@@ -22,10 +22,20 @@ class FirestoreDepositService {
   static Future<void> depositMoney(Deposit deposit) async {
     final firebaseUser = await FirebaseAuth.instance.currentUser();
     final depositCollection = Firestore.instance
-    .collection(FirestoreConstants.userCollection)
-    .document(firebaseUser.uid)
-    .collection(FirestoreConstants.depositCollection);
+      .collection(FirestoreConstants.userCollection)
+      .document(firebaseUser.uid)
+      .collection(FirestoreConstants.depositCollection);
 
     depositCollection.add(deposit.toJson());
+  }
+
+  static void removeDeposit(Deposit deposit) async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser();
+    Firestore.instance
+      .collection(FirestoreConstants.userCollection)
+      .document(firebaseUser.uid)
+      .collection(FirestoreConstants.depositCollection)
+      .document(deposit.id)
+      .delete();
   }
 }
