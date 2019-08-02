@@ -45,42 +45,20 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
      highlightElevation: 2,
      padding: const EdgeInsets.all(0),
      shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(100)),
-      child: Container(
-       height: 150,
-       width: 150,
-       decoration: BoxDecoration(
-         color: Colors.white,
-         shape: BoxShape.circle,
-       ),
-       child: StreamBuilder<int>(
-        stream: userBloc.outMaxMoney,
-        initialData: 2,
-        builder: (context, snapshot) {
-          final totalMoney = snapshot.data;
-          return StreamBuilder<int>(
-            stream: depositBloc.outDepositsAmount,
-            initialData: 1,
-            builder: (context, snapshot) {
-              final moneySaved= snapshot.data;
-              _animationController.animateTo(moneySaved/totalMoney );
-              return AnimatedBuilder(
-                animation: _curveAnimation,
-                builder: (context,child) {
-                 return CustomPaint(
-                   foregroundPainter: CircleProgressPainter (
-                   completeColor: Colors.green[300],
-                   lineColor: Colors.red[300],
-                   completePercent: _curveAnimation.value,
-                   ),
-                 );
-               },
-             );
-            }
-          );
-         }
-       ),
-     ),
+      borderRadius: BorderRadius.circular(100)
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          ProgressCircle(
+            userBloc: userBloc, 
+            depositBloc: depositBloc, 
+            animationController: _animationController, 
+            curveAnimation: _curveAnimation
+          ),
+          DepositMoneyWithAmount(depositBloc: depositBloc)
+        ],
+      )
     );
   }
 
@@ -88,6 +66,91 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
   void dispose() {
     super.dispose();
     _animationController.dispose();
+  }
+}
+
+class ProgressCircle extends StatelessWidget {
+  const ProgressCircle({
+    Key key,
+    @required this.userBloc,
+    @required this.depositBloc,
+    @required AnimationController animationController,
+    @required Animation curveAnimation,
+  }) : _animationController = animationController, _curveAnimation = curveAnimation, super(key: key);
+
+  final UserBloc userBloc;
+  final DepositBloc depositBloc;
+  final AnimationController _animationController;
+  final Animation _curveAnimation;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+     height: 150,
+     width: 150,
+     decoration: BoxDecoration(
+       color: Colors.white,
+       shape: BoxShape.circle,
+     ),
+     child: StreamBuilder<int>(
+      stream: userBloc.outMaxMoney,
+      initialData: 2,
+      builder: (context, snapshot) {
+        final totalMoney = snapshot.data;
+        return StreamBuilder<int>(
+          stream: depositBloc.outDepositsAmount,
+          initialData: 1,
+          builder: (context, snapshot) {
+            final moneySaved= snapshot.data;
+            _animationController.animateTo(moneySaved/totalMoney );
+            return AnimatedBuilder(
+              animation: _curveAnimation,
+              builder: (context,child) {
+               return CustomPaint(
+                 foregroundPainter: CircleProgressPainter (
+                 completeColor: Colors.green[300],
+                 lineColor: Colors.red[300],
+                 completePercent: _curveAnimation.value,
+                 ),
+               );
+             },
+           );
+          }
+        );
+       }
+     ),
+     );
+  }
+}
+
+class DepositMoneyWithAmount extends StatelessWidget {
+  const DepositMoneyWithAmount({
+    Key key,
+    @required this.depositBloc,
+    }) : super(key: key);
+
+    final DepositBloc depositBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<int>(
+      stream: depositBloc.outSelectedAmount,
+      initialData: 1,
+      builder: (context, snapshot) {
+        final selectedAmount = snapshot.data;
+        return Column(
+          children: <Widget>[
+            SizedBox(
+              height: 60,
+              width: 60,
+              child: Placeholder(),
+            ),
+            SizedBox(height: 4),
+            Text('Rp.${selectedAmount}')
+          ],
+        );
+      },
+    );
   }
 }
 

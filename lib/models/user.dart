@@ -9,7 +9,7 @@ class User{
   
   User.temp(){
     this.lastLoggedIn = DateTime.now();
-    this.maxMoneyPerDay = 0;
+    this.maxMoneyPerDay = 200000;
   }
   User.fromDb(Map<String, dynamic> json){
     this.maxMoneyPerDay = json[maxMoneyPerDayField];
