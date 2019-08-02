@@ -19,8 +19,7 @@ class DepositPage extends StatelessWidget {
               children: <Widget>[
                 MoneyTodayLabel(),
                 InkWell(
-                  onTap: () => depositBloc.depositMoney(),
-                    child: CircleButton(),
+                  child: CircleButton(),
                 ),
               ],
             )

@@ -16,13 +16,19 @@ class CircleButton extends StatefulWidget {
 
 class _CircleButtonState extends State<CircleButton> with SingleTickerProviderStateMixin {
   AnimationController _animationController;
+  Animation _curveAnimation;
 
  @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 2000),
+      duration: Duration(milliseconds: 600),
+    );
+
+    _curveAnimation = CurvedAnimation(
+      parent: _animationController, 
+      curve: Curves.easeOut
     );
   }
 
@@ -30,52 +36,52 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final userBloc = Provider.of<UserBloc>(context);
     final depositBloc = Provider.of<DepositBloc>(context);
-    return Container(
-      height: 150,
-      width: 150,
-      decoration: BoxDecoration(color: Colors.white,
-      borderRadius: BorderRadius.circular(100),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black26,
-          blurRadius: 5,
-          offset: Offset(0,2),
-          ),
-        ],
-      ),
-     child: AnimatedBuilder(
-       animation: _animationController,
-       builder: (context, child) {
-         return StreamBuilder<int>(
-           stream: userBloc.outMaxMoney,
-           initialData: 2,
-           builder: (context, snapshot) {
-             final totalMoney = snapshot.data;
-             return StreamBuilder<int>(
-               stream: depositBloc.outDepositsAmount,
-               initialData: 1,
-               builder: (context, snapshot) {
-                 final moneySaved= snapshot.data;
-                 print(moneySaved / totalMoney);
-                 _animationController.animateTo(moneySaved/totalMoney );
-                 return AnimatedBuilder(
-                   animation: _animationController,
-                   builder: (context,child) {
-                    return CustomPaint(
-                      foregroundPainter: CircleProgressPainter (
-                      completeColor: Colors.greenAccent,
-                      lineColor: Colors.grey.shade300,
-                      completePercent: _animationController.value,
-                      ),
-                    );
-                  },
-                );
-               }
+    return MaterialButton(
+     onPressed: () => depositBloc.depositMoney(),
+     height: 150,
+     minWidth: 150,
+     color: Colors.white,
+     elevation: 8,
+     highlightElevation: 2,
+     padding: const EdgeInsets.all(0),
+     shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(100)),
+      child: Container(
+       height: 150,
+       width: 150,
+       decoration: BoxDecoration(
+         color: Colors.white,
+         shape: BoxShape.circle,
+       ),
+       child: StreamBuilder<int>(
+        stream: userBloc.outMaxMoney,
+        initialData: 2,
+        builder: (context, snapshot) {
+          final totalMoney = snapshot.data;
+          return StreamBuilder<int>(
+            stream: depositBloc.outDepositsAmount,
+            initialData: 1,
+            builder: (context, snapshot) {
+              final moneySaved= snapshot.data;
+              print(moneySaved / totalMoney);
+              _animationController.animateTo(moneySaved/totalMoney );
+              return AnimatedBuilder(
+                animation: _curveAnimation,
+                builder: (context,child) {
+                 return CustomPaint(
+                   foregroundPainter: CircleProgressPainter (
+                   completeColor: Colors.greenAccent,
+                   lineColor: Colors.grey.shade300,
+                   completePercent: _curveAnimation.value,
+                   ),
+                 );
+               },
              );
-           }
-         );  
-        },
-      ),
+            }
+          );
+         }
+       ),
+     ),
     );
   }
 
