@@ -16,18 +16,10 @@ class DepositBloc implements BlocBase{
   final _selectedDepositAmountController = BehaviorSubject<int>();
   Function(int) get _inSelectedAmount => _selectedDepositAmountController.sink.add;
   Stream<int> get outSelectedAmount => _selectedDepositAmountController.stream;
-  
+
    Stream<int> get outDepositsAmount {
     return outDeposits.map((deposits) => deposits.fold<int>(0, (totalAmount, deposit) => totalAmount + deposit.amount));
   }
-
-  // Stream<int> get outDepositsAmount => outDeposits.map((deposits){
-  //   int totalValue=0;
-  //   for(Deposit deposit in deposits) {
-  //     totalValue += deposit.amount;
-  //   }
-  //   return totalValue;
-  // });
 
   Future<void> init() async {
     final depositStream = await FirestoreDepositService.getDepositStream(DateTime.now());
@@ -46,6 +38,11 @@ class DepositBloc implements BlocBase{
 
   Future<void> removeDeposit(Deposit deposit) async {
     FirestoreDepositService.removeDeposit(deposit);
+  }
+
+  set setDepositAmount(int amount) {
+    _selectedMoneyAmount = amount;
+    _inSelectedAmount(_selectedMoneyAmount);
   }
 
   @override
