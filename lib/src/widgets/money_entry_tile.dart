@@ -15,10 +15,13 @@ class MoneyEntryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final depositBloc = Provider.of<DepositBloc>(context);
     return Dismissible(
+      background: Container(
+        color: Colors.redAccent,
+      ),
       key: UniqueKey(),
       onDismissed: (direction) => depositBloc.removeDeposit(deposit),
-          child: Container(
-        decoration: BoxDecoration(
+        child: Container(
+         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
               color: Colors.grey.shade300,

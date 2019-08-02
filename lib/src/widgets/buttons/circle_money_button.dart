@@ -69,8 +69,8 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
                 builder: (context,child) {
                  return CustomPaint(
                    foregroundPainter: CircleProgressPainter (
-                   completeColor: Colors.greenAccent,
-                   lineColor: Colors.grey.shade300,
+                   completeColor: Colors.green[300],
+                   lineColor: Colors.red[300],
                    completePercent: _curveAnimation.value,
                    ),
                  );
