@@ -27,7 +27,7 @@ class Deposit{
   String toString(){
     return 'amount: $amount,date: $date';
   }
-  
+
   String id;
   DateTime date;
   int amount;
