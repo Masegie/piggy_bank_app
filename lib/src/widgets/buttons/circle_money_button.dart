@@ -101,7 +101,7 @@ class ProgressCircle extends StatelessWidget {
           stream: depositBloc.outDepositsAmount,
           initialData: 1,
           builder: (context, snapshot) {
-            final moneySaved= snapshot.data;
+            final moneySaved = snapshot.data;
             _animationController.animateTo(moneySaved/totalMoney );
             return AnimatedBuilder(
               animation: _curveAnimation,
@@ -146,7 +146,7 @@ class DepositMoneyWithAmount extends StatelessWidget {
               child: Placeholder(),
             ),
             SizedBox(height: 4),
-            Text('Rp.${selectedAmount}')
+            Text('Rp.$selectedAmount')
           ],
         );
       },

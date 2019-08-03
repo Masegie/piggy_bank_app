@@ -4,6 +4,7 @@ import 'package:dram1y/src/global_blocs/auth/auth_bloc.dart';
 import 'package:dram1y/src/home/pages/home_page.dart';
 import 'package:dram1y/src/home/pages/money_page.dart';
 import 'package:dram1y/src/home/pages/notification_page.dart';
+import 'package:dram1y/src/widgets/popups/sync_account_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +14,9 @@ class PageContainer extends StatefulWidget {
     @required this.user,
   }) : super(key: key);
 
+  
   final User user;
+  
 
   @override
   _PageContainerState createState() => _PageContainerState();
@@ -27,6 +30,9 @@ class _PageContainerState extends State<PageContainer> {
     NotificationPage(),
   ];
 
+  bool isAnonymous = false;
+  AuthBloc auth;
+  
   @override
   Widget build(BuildContext context) {
     final authBloc = Provider.of<AuthBloc>(context);
@@ -36,7 +42,7 @@ class _PageContainerState extends State<PageContainer> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: <Widget>[
-          //popup menu untuk logout
+          //popup menu
           PopupMenuButton(
             onSelected: (value) => onMenuSelection(value,authBloc),
             itemBuilder: (context){
@@ -45,6 +51,11 @@ class _PageContainerState extends State<PageContainer> {
                 value: PopupMenuChoices.signOut,
                 child: Text('sign out'),
                 ),
+               if (isAnonymous)
+                const PopupMenuItem<PopupMenuChoices>(
+                  value: PopupMenuChoices.syncPopup,
+                  child: Text('sync account'),
+                )
               ];
             },
           )
@@ -74,9 +85,25 @@ class _PageContainerState extends State<PageContainer> {
     );
   }
 
-  void onMenuSelection(PopupMenuChoices value, AuthBloc authBloc){
-    if (value == PopupMenuChoices.signOut){
-      authBloc.signOut();
+  void onMenuSelection(PopupMenuChoices value, AuthBloc auth) async {
+    switch (value) {
+      case PopupMenuChoices.signOut:
+        auth.signOut();
+        break;
+      case PopupMenuChoices.syncPopup:
+        await showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (context) {
+            return SyncAccountPopup();
+          },
+        );
+        final firebaseUser = await auth.currentUser();
+        setState(() {
+          isAnonymous = firebaseUser.isAnonymous;
+        });
+        break;
+      default:
     }
   }
 }

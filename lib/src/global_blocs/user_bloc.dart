@@ -9,10 +9,16 @@ class UserBloc implements BlocBase{
 
   User _user;
   StreamSubscription _userStreamSubscription;
+  String _selectedDreamName = "Duno";
 
   final _userController = BehaviorSubject<User>();
   Function(User) get _inUser => _userController.sink.add;
   Stream<User> get outUser => _userController.stream;
+
+  final _selectedDreamNameController = BehaviorSubject<String>();
+  Function(String) get _inSelectedName => _selectedDreamNameController.sink.add;
+  Stream<String> get outSelectedName => _selectedDreamNameController.stream;
+
 
   Stream<int> get outMaxMoney => outUser.map((user) => user.maxMoneyPerDay);
 
@@ -25,11 +31,18 @@ class UserBloc implements BlocBase{
       _inUser(_user);
     });
     //update login terakhir
+    _inSelectedName(_selectedDreamName);
+  }
+
+  setDreamName(String name) {
+    _selectedDreamName = name;
+    _inSelectedName(_selectedDreamName);
   }
 
   @override
   void dispose(){
     _userController.close();
+    _selectedDreamNameController.close();
     _userStreamSubscription.cancel();
   }
 }

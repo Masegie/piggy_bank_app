@@ -63,7 +63,7 @@ class AuthBloc implements BaseAuth {
     return user?.uid;
   }
 
-   @override
+  @override
   Future<FirebaseUser> currentUser() {
     return _firebaseAuth.currentUser();
   }
