@@ -1,38 +1,50 @@
+import 'package:dram1y/src/global_blocs/auth/auth_bloc.dart';
 import 'package:dram1y/src/widgets/buttons/anonymousSignInButton.dart';
 import 'package:dram1y/src/widgets/buttons/googleSignInButton.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final auth = Provider.of<AuthBloc>(context);
 
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          SizedBox(height: 100,width: double.infinity),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 100,width: double.infinity),
  
-          appIcon(),
-          textSpace,
-          title(textTheme),
-          textSpace,
-          subTitle(textTheme),
-
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                GoogleSignInButton(),
-                AnonymousSignInButton(),
-              ],
-            ),
-          ),
-          Text(
-            'By creating an account, you are agreeing to our\nTerms of Service and Privacy Policy',
-            textAlign: TextAlign.center,
-            ),
+            appIcon(),
             textSpace,
-        ],
+            title(textTheme),
+            textSpace,
+            subTitle(textTheme),
+
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  GoogleSignInButton(
+                    onPressed: auth.signInWithGoogle,
+                  ),
+                  AnonymousSignInButton(),
+                ],
+              ),
+            ),
+            Text(
+              'By creating an account, you are agreeing to our\nTerms of Service and Privacy Policy',
+              textAlign: TextAlign.center,
+              ),
+              textSpace,
+          ],
+        ),
       ),
     );
   }

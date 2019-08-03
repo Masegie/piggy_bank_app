@@ -9,7 +9,7 @@ class AuthBloc implements BaseAuth {
     scopes: [
       'email',
       'https://www.googleapis.com/auth/contacts.readonly',
-    ]
+    ],
   );
 
   @override
@@ -61,5 +61,10 @@ class AuthBloc implements BaseAuth {
 
     final user = await anonymousUser.linkWithCredential(credential);
     return user?.uid;
+  }
+
+   @override
+  Future<FirebaseUser> currentUser() {
+    return _firebaseAuth.currentUser();
   }
 }
