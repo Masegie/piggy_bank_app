@@ -9,7 +9,7 @@ class UserBloc implements BlocBase{
 
   User _user;
   StreamSubscription _userStreamSubscription;
-  String _selectedDreamName = "Duno";
+  String _selectedDreamName = "duno";
 
   final _userController = BehaviorSubject<User>();
   Function(User) get _inUser => _userController.sink.add;
@@ -19,8 +19,9 @@ class UserBloc implements BlocBase{
   Function(String) get _inSelectedName => _selectedDreamNameController.sink.add;
   Stream<String> get outSelectedName => _selectedDreamNameController.stream;
 
-
   Stream<int> get outMaxMoney => outUser.map((user) => user.maxMoneyPerDay);
+
+  //Stream<String> get outDreamName =>outUser.map((user) => user.dreamName);
 
   Future<void> init() async {
     await FirestoreUserService.checkAndCreateUser();

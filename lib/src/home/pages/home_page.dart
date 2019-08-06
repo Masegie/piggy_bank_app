@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 
 class DepositPage extends StatelessWidget {
+  final UserBloc userBloc;
+
+  const DepositPage({Key key, this.userBloc}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final depositBloc = Provider.of<DepositBloc>(context);
@@ -17,20 +20,20 @@ class DepositPage extends StatelessWidget {
         children: <Widget>[
           Expanded(
             flex: 4,
-            child: StreamBuilder<int>(
-              stream: userBloc.outMaxMoney,
-              initialData: 0,
+            child: StreamBuilder<String>(
+              stream: userBloc.outSelectedName,
+              initialData: '1',
               builder: (context, snapshot) {
-                final maxMoney = snapshot.data;
+                final dreamName = snapshot.data;
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    if(maxMoney != 1)
+                    if(dreamName != "-")
                     MoneyTodayLabel(),
-                    if(maxMoney != 1)
+                    if(dreamName != "-")
                     CircleButton(),
-                    if(maxMoney >= 1)
-                    DreamPage(),
+                    Text('$dreamName'),
+                 //   DreamPage(),
                   ],
                 );
               }
