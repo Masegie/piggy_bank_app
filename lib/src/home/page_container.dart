@@ -77,8 +77,8 @@ class _PageContainerState extends State<PageContainer> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none),
-            title: Text('Notification'),
+            icon: Icon(Icons.settings_system_daydream),
+            title: Text('Dreams'),
           ),
         ],
       ),

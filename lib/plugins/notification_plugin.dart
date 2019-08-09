@@ -1,3 +1,4 @@
+import 'package:dram1y/models/notification_data.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationPlugin {
@@ -11,7 +12,10 @@ class NotificationPlugin {
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     final initializationSettingsAndroid = AndroidInitializationSettings('secondary_icon');
     final initializationSettingsIOS = IOSInitializationSettings();
-    final initializationSettings = InitializationSettings(initializationSettingsAndroid,initializationSettingsIOS);
+    final initializationSettings = InitializationSettings(
+      initializationSettingsAndroid,
+      initializationSettingsIOS,
+    );
     _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onSelectNotification: onSelectNotification,
@@ -26,14 +30,44 @@ class NotificationPlugin {
 
   Future<void> showWeeklyAtDayAndTime(Time time, Day day, int id,String title, String description) async {
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'show me weekly channel id',
-      'show me weekly channel name',
-      'show me weekly description'
+      'show weekly channel id',
+      'show weekly channel name',
+      'show eekly description'
     );
     final iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    final platformChannelsSpecifics = NotificationDetails(androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    final platformChannelsSpecifics = NotificationDetails(
+      androidPlatformChannelSpecifics, 
+      iOSPlatformChannelSpecifics
+    );
 
-    await _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(id, title, description, day, time, platformChannelsSpecifics);
+    await _flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+      id, 
+      title, 
+      description, 
+      day, 
+      time, 
+      platformChannelsSpecifics
+    );
+  }
+
+  Future<void> showDailyAtTime(Time time,int id,String title, String description) async {
+    final androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'show weekly channel id',
+      'show weekly channel name',
+      'show weekly description'
+    );
+    final iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    final platformChannelsSpecifics = NotificationDetails(
+      androidPlatformChannelSpecifics, 
+      iOSPlatformChannelSpecifics
+    );
+    await _flutterLocalNotificationsPlugin.showDailyAtTime(
+      id,
+      title, 
+      description, 
+      time, 
+      platformChannelsSpecifics
+    );
   }
 
   Future<List<PendingNotificationRequest>> getScheduledNotifications() async {
@@ -44,4 +78,23 @@ class NotificationPlugin {
   Future cancelNotification(int id) async {
     await _flutterLocalNotificationsPlugin.cancel(id);
   }
+
+  bool checkIfIdExist(List<PendingNotificationRequest> notificationList, int id) {
+    
+  }
+
+  //   Future<void> cancelAllNotifications() async {
+  //   await _flutterLocalNotificationsPlugin.cancelAll();
+  // }
+
+  // Future<void> scheduleAllNotifications(List<NotificationData> notifications) async {
+  //   for (final notification in notifications) {
+  //     await showDailyAtTime(
+  //       Time(notification.hour, notification.minute),
+  //       notification.notificationId,
+  //       notification.title,
+  //       notification.description,
+  //     );
+  //   }
+  // }
 }
