@@ -30,56 +30,59 @@ class _NotificationPageState extends State<NotificationPage> {
             initialData: [],
             builder: (context, snapshot) {
               final notifications = snapshot.data;
-              // if(notifications.isEmpty)
-              //   return Expanded(
-              //     child: Center(
-              //       child: Container(
-              //         height: 300,
-              //         width: 300,
-              //         child: Placeholder(),
-              //       ),
-              //     ),
-              //   );
+              if(notifications.isEmpty)
+                return Expanded(
+                  child: Center(
+                    child: Container(
+                      height: 300,
+                      width: 300,
+                      child: Placeholder(),
+                    ),
+                  ),
+                );
               return Expanded(
                 child: ListView.builder(
                   itemCount: notifications.length,
                   itemBuilder: (context, index) {
                     final notification = notifications[index];
-                    return NotificationTile(notification: notification);
+                    return NotificationTile(notification: notification,
+                    deleteNotification: dismissNotification,
+                    );
                   },
                 ),
               );
             },
           ),
-          FlatButton(
-            padding: EdgeInsets.all(0),
-            onPressed: navigateToNotificationCreation,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
-              ),
-            ),
-            color: Colors.blue.shade300,
-            child: Container(
-              alignment: Alignment.center,
-              height: 50,
-              width: double.infinity,
-              child: Text(
-                'create',
-                style: TextStyle(
-                  color: Colors.blue.shade900,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),  
-              ),
-            ),
-          )
-          // CustomWideFlatButton(
+          // FlatButton(
+          //   padding: EdgeInsets.all(0),
           //   onPressed: navigateToNotificationCreation,
-          //   backgroundColor: Colors.blue.shade300,
-          //   foregroundColor: Colors.blue.shade900,
-          //),
+          //   shape: RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.only(
+          //       bottomLeft: Radius.circular(5),
+          //       bottomRight: Radius.circular(5),
+          //     ),
+          //   ),
+          //   color: Colors.blue.shade300,
+          //   child: Container(
+          //     alignment: Alignment.center,
+          //     height: 50,
+          //     width: double.infinity,
+          //     child: Text(
+          //       'create',
+          //       style: TextStyle(
+          //         color: Colors.blue.shade900,
+          //         fontSize: 20,
+          //         fontWeight: FontWeight.bold,
+          //       ),  
+          //     ),
+          //   ),
+          // )
+          CustomWideFlatButton(
+            onPressed: navigateToNotificationCreation,
+            backgroundColor: Colors.blue.shade300,
+            foregroundColor: Colors.blue.shade900,
+            isRoundedAtBottom: false,
+          ),
         ],
       ),
     );
@@ -127,86 +130,80 @@ class _NotificationPageState extends State<NotificationPage> {
 class NotificationTile extends StatelessWidget {
   const NotificationTile({
     Key key,
-    @required this.notification, 
+    @required this.notification,
+    @required this.deleteNotification, 
   }) : super(key: key);
 
   final PendingNotificationRequest notification;
-  
+  final Function(int id) deleteNotification;
+
   @override
   Widget build(BuildContext context) {
-   // final textTheme = Theme.of(context).textTheme;
+    final textTheme = Theme.of(context).textTheme;
     return Card(
-      child: ListTile(
-        title: Text(notification.title),
-        subtitle: Text(notification.body),
-        // trailing: IconButton(
-        //   onPressed: () => deleteNotification(notification.id),
-        //   icon: Icon(Icons.delete)
-        // ),
-      ),
-      // elevation: 6,
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.circular(10),
-      // ),
-      // child: Container(
-      //   padding: const EdgeInsets.all(16),
-      //   child: Row(
-      //     children: <Widget>[
-      //       Expanded(
-      //         child: Column(
-      //           crossAxisAlignment: CrossAxisAlignment.start,
-      //           children: <Widget>[
-      //             Text(
-      //               notification.title,
-      //               style: textTheme.title.copyWith(
-      //                 fontWeight: FontWeight.normal,
-      //               ),
-      //             ),
-      //             smallHeight,
-      //             Text(
-      //               notification.body,
-      //               style: textTheme.subtitle.copyWith(
-      //                 fontWeight: FontWeight.normal,
-      //               ),
-      //             ),
-      //             smallHeight,
-      //             Row(
-      //               children: <Widget>[
-      //                 Icon(
-      //                   Icons.access_time,
-      //                   size: 28,
-      //                   color: Theme.of(context).accentColor,
-      //                 ),
-      //                 SizedBox(width: 12),
-      //                 Text(
-      //                   '12:42',
-      //                   style: textTheme.headline.copyWith(
-      //                     fontWeight: FontWeight.bold,
-      //                     color: Colors.grey.shade800,
-      //                   ),
-      //                 ),
-      //               ],
-      //             )
-      //           ],
-      //         ),
-      //       ),
-      //       IconButton(
-      //         onPressed: () => deleteNotification(notification.id),
-      //         icon: Icon(Icons.delete, size: 32),
-      //       )
-      //     ],
+      // child: ListTile(
+      //   title: Text(notification.title),
+      //   subtitle: Text(notification.body),
+      //   trailing: IconButton(
+      //     onPressed: () => deleteNotification(notification.id),
+      //     icon: Icon(Icons.delete)
       //   ),
       // ),
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    notification.title,
+                    style: textTheme.title.copyWith(
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  smallHeight,
+                  Text(
+                    notification.body,
+                    style: textTheme.subtitle.copyWith(
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  smallHeight,
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.access_time,
+                        size: 28,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      SizedBox(width: 12),
+                      Text(
+                        '12:42',
+                        style: textTheme.headline.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade800,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: () => deleteNotification(notification.id),
+              icon: Icon(Icons.delete, size: 32),
+            )
+          ],
+        ),
+      ),
     );
   }
 
-//   SizedBox get smallHeight => SizedBox(height: 8);
-//   bool _checkIfIdExists(List<NotificationData> notifications, int id) {
-//     for (final notification in notifications) {
-//       if (notification.notificationId == id) {
-//         return true;
-//       }
-//     }
-//     return false;
-//   }
+  SizedBox get smallHeight => SizedBox(height: 8);
  }

@@ -26,11 +26,11 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // title: Text(
-        //   'Create Notification',
-        //   style: Theme.of(context).textTheme.title,
-        // ),
-        // centerTitle: true,
+        title: Text(
+          'Create Notification',
+          style: Theme.of(context).textTheme.title,
+        ),
+        centerTitle: true,
       ),
       body: Column(
         children: <Widget>[
@@ -41,15 +41,26 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Placeholder(),
+                        ),
+                      ),
+                    ),
                     CustomInputField(
                       controller: _titleController,
                       hintText: 'Title',
+                      //inputType: TextInputType.text
                       autoFocus: true,
                     ),
                     SizedBox(height: 12),
                     CustomInputField(
                       controller: _descriptionController,
                       hintText: 'Description',
+                      //inputType: TextInputType.text
                       autoFocus: true,
                     ),
                     SizedBox(height: 12),

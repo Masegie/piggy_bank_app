@@ -80,7 +80,12 @@ class NotificationPlugin {
   }
 
   bool checkIfIdExist(List<PendingNotificationRequest> notificationList, int id) {
-    
+    for (final notification in notificationList) {
+      if (notification.id == id) {
+        return true;
+      }
+    }
+    return false;
   }
 
   //   Future<void> cancelAllNotifications() async {

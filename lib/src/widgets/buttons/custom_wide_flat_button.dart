@@ -7,21 +7,21 @@ class CustomWideFlatButton extends StatelessWidget {
     @required this.onPressed,
     @required this.backgroundColor,
     @required this.foregroundColor, 
-  //  this.isRoundedAtBottom = true,
+    this.isRoundedAtBottom = true,
   }) : super(key: key);
 
   //final String text;
   final VoidCallback onPressed;
   final Color backgroundColor;
   final Color foregroundColor;
-  //final bool isRoundedAtBottom;
+  final bool isRoundedAtBottom;
 
-  // final roundedBorder = const RoundedRectangleBorder(
-  //   borderRadius: BorderRadius.only(
-  //     bottomLeft: Radius.circular(5),
-  //     bottomRight: Radius.circular(5),
-  //   ),
-  // );
+  final roundedBorder = const RoundedRectangleBorder(
+    borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(5),
+      bottomRight: Radius.circular(5),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
