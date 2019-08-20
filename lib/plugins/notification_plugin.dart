@@ -88,18 +88,18 @@ class NotificationPlugin {
     return false;
   }
 
-  //   Future<void> cancelAllNotifications() async {
-  //   await _flutterLocalNotificationsPlugin.cancelAll();
-  // }
+    Future<void> cancelAllNotifications() async {
+    await _flutterLocalNotificationsPlugin.cancelAll();
+  }
 
-  // Future<void> scheduleAllNotifications(List<NotificationData> notifications) async {
-  //   for (final notification in notifications) {
-  //     await showDailyAtTime(
-  //       Time(notification.hour, notification.minute),
-  //       notification.notificationId,
-  //       notification.title,
-  //       notification.description,
-  //     );
-  //   }
-  // }
+  Future<void> scheduleAllNotifications(List<NotificationData> notifications) async {
+    for (final notification in notifications) {
+      await showDailyAtTime(
+        Time(notification.hour, notification.minute),
+        notification.notificationId,
+        notification.title,
+        notification.description,
+      );
+    }
+  }
 }

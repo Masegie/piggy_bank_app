@@ -6,7 +6,7 @@ class CustomInputField extends StatelessWidget {
     @required this.controller,
     @required this.hintText,
    // @required this.inputType,
-    this.autoFocus,
+    this.autoFocus, TextInputType inputType,
   }) : super(key: key);
 
   final TextEditingController controller;

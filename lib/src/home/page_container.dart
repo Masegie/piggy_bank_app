@@ -4,6 +4,7 @@ import 'package:dram1y/src/global_blocs/auth/auth_bloc.dart';
 import 'package:dram1y/src/home/pages/home_page.dart';
 import 'package:dram1y/src/home/pages/money_page.dart';
 import 'package:dram1y/src/home/pages/notification_page.dart';
+import 'package:dram1y/src/pages/onboarding_page.dart';
 import 'package:dram1y/src/widgets/popups/sync_account_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,25 @@ class _PageContainerState extends State<PageContainer> {
   bool isAnonymous = false;
   AuthBloc auth;
   
+  @override
+  void initState() { 
+    super.initState();
+    delayedInit();
+  }
+
+  Future<void> delayedInit() async {
+    await Future.delayed(Duration.zero, () {
+      if (widget.user.maxMoneyPerDay == 1) {
+        //replace screen with onboarding page
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => OnboardingPage(),
+          ),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final authBloc = Provider.of<AuthBloc>(context);

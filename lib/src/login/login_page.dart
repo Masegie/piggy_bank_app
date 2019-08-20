@@ -20,13 +20,11 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 100,width: double.infinity),
- 
             appIcon(),
             textSpace,
             title(textTheme),
             textSpace,
             subTitle(textTheme),
-
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -51,11 +49,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget get textSpace => SizedBox(height: 8);
 
-  SizedBox appIcon(){
-    return SizedBox(
-          height: 150,
-          width: 150,
-          child: Placeholder(),
+  Widget appIcon(){
+    return Image.asset(
+      'assets/sign_in_icon.png',
+      width: 125,
+      height: 125,
     );
   }
 

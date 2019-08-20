@@ -3,7 +3,8 @@ import 'package:dram1y/src/widgets/buttons/custom_wide_flat_button.dart';
 import 'package:dram1y/src/widgets/custom_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:dram1y/src/global_blocs/notification_bloc.dart';
+import 'package:dram1y/src/global_blocs/app_bloc.dart';
 import 'package:provider/provider.dart';
 
 class CreateNotificationPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-  //  final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
+    final notificationBloc = Provider.of<NotificationBloc>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -53,18 +54,18 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
                     CustomInputField(
                       controller: _titleController,
                       hintText: 'Title',
-                      //inputType: TextInputType.text
+                      inputType: TextInputType.text,
                       autoFocus: true,
                     ),
                     SizedBox(height: 12),
                     CustomInputField(
                       controller: _descriptionController,
                       hintText: 'Description',
-                      //inputType: TextInputType.text
+                      inputType: TextInputType.text,
                       autoFocus: true,
                     ),
                     SizedBox(height: 12),
-                    FlatButton(
+                    OutlineButton(
                      onPressed: selectTime,
                      color: Colors.blue,
                      child: Text(selectedTime.format(context)),
@@ -75,9 +76,10 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
             ),
           ),
          CustomWideFlatButton(
-           onPressed: createNotification,
+           onPressed: () => createNotification(notificationBloc),
            backgroundColor: Colors.blue.shade300,
            foregroundColor: Colors.blue.shade900,
+           isRoundedAtBottom: false,
          ),
         ],
       ),
@@ -96,12 +98,12 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
     }
   }
 
-  void createNotification() {
+  void createNotification(NotificationBloc notificationBloc) {
       final title = _titleController.text;
       final description = _descriptionController.text;
-      final time = Time(selectedTime.hour,selectedTime.minute);
 
-      final notificationData = NotificationData(title, description, time);
-      Navigator.of(context).pop(notificationData);
+      final notificationData = NotificationData(title, description, selectedTime.hour, selectedTime.minute);
+      notificationBloc.addNotification(notificationData);
+      Navigator.of(context).pop();
   }
 }

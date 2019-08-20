@@ -100,30 +100,11 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   Future<void> navigateToNotificationCreation() async {
-    NotificationData notificationData = await Navigator.of(context).push(
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => CreateNotificationPage(),
       ),
     );
-    if (notificationData != null) {
-      final notificationList = await _notificationPlugin.getScheduledNotifications();
-      int id = 0;
-      for (var i = 0; i<100 ; i++) {
-        bool exist = _notificationPlugin.checkIfIdExist(notificationList,i);
-        if(!exist) {
-          id = i;
-        }
-      }
-      await _notificationPlugin.showDailyAtTime(
-        notificationData.time,
-        id, 
-        notificationData.title, 
-        notificationData.description
-      );
-      setState(() {
-       notificationFuture = _notificationPlugin.getScheduledNotifications(); 
-      });
-    }
   }
 }
 

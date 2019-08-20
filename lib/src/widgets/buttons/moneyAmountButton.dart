@@ -36,7 +36,7 @@ class MoneyAmountButton extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 4),
+          SizedBox(height: 8),
           if (amount != 0 ) Text('RP. $amount') else Text('Custom'),
         ],
       ),

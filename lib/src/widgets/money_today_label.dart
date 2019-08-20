@@ -3,10 +3,32 @@ import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MoneyTodayLabel extends StatelessWidget {
+class MoneyTodayLabel extends StatefulWidget {
   const MoneyTodayLabel({
     Key key,
   }) : super(key: key);
+
+  @override
+  _MoneyTodayLabelState createState() => _MoneyTodayLabelState();
+}
+
+class _MoneyTodayLabelState extends State<MoneyTodayLabel> with SingleTickerProviderStateMixin {
+  AnimationController _fadeInController;
+  
+  @override
+  void initState() {
+    super.initState();
+    _fadeInController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  @override
+  void dispose() {
+    _fadeInController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +43,24 @@ class MoneyTodayLabel extends StatelessWidget {
           final maxMoney = snapshot.data;
           return StreamBuilder<int>(
             stream: depositBloc.outDepositsAmount,
-            initialData: 190,
             builder: (context, snapshot) {
-              final moneyAmount = snapshot.data;
-              return Text(
-                'Rp. $moneyAmount/Rp.$maxMoney',
-                style: Theme.of(context).textTheme.title,
-              );
+              if (snapshot.hasData) {
+                final moneyAmount  = snapshot.data;
+                _fadeInController.forward();
+                return AnimatedBuilder(
+                  animation: _fadeInController,
+                  builder: (context,child) {
+                    return Opacity(
+                      opacity: _fadeInController.value,
+                      child: Text(
+                        'Rp. $moneyAmount/Rp.$maxMoney',
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                    );
+                  },
+                );
+              }
+              return SizedBox(height: 24);
             },
           );
         }
