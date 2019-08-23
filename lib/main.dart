@@ -1,5 +1,6 @@
 import 'package:dram1y/src/global_blocs/auth/auth_bloc.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
+import 'package:dram1y/src/global_blocs/notification_bloc.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/root_page.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,10 @@ class Dreamoney extends StatelessWidget {
         Provider<DepositBloc>(
           builder: (_) => DepositBloc(),
           dispose: (_, depositBloc) => depositBloc.dispose(),  
+        ),
+        Provider<NotificationBloc>(
+          builder: (_) => NotificationBloc(),
+          dispose: (_, notificationBloc) => notificationBloc.dispose(),
         )
       ],
       child: MaterialApp(

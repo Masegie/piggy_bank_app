@@ -45,7 +45,7 @@ class _CustomAmountOnboardingPopupState extends State<CustomAmountOnboardingPopu
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         suffixIcon: _errorIcon,
-                        suffixText: 'ml',
+                        suffixText: 'rp',
                         fillColor: Colors.grey.shade300,
                         filled: true,
                         border: OutlineInputBorder(

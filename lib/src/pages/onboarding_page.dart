@@ -72,7 +72,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   
   Text title(TextTheme textTheme) {
     return Text(
-      'We help you drink water',
+      "Let's start reaching your dreams!",
       style: textTheme.title.copyWith(
         fontSize: 24,
       ),
@@ -81,7 +81,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   Text subTitle(TextTheme textTheme) {
     return Text(
-      'Set your daily water intake goal',
+      'Set your dream goal!',
       style: textTheme.subtitle.copyWith(fontWeight: FontWeight.w400),
     );
   }
