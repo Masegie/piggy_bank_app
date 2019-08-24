@@ -21,7 +21,7 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final notificationBloc = Provider.of<NotificationBloc>(context);
+    final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -99,11 +99,13 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
   }
 
   void createNotification(NotificationBloc notificationBloc) {
+    if (_formKey.currentState.validate()) {
       final title = _titleController.text;
       final description = _descriptionController.text;
 
       final notificationData = NotificationData(title, description, selectedTime.hour, selectedTime.minute);
       notificationBloc.addNotification(notificationData);
       Navigator.of(context).pop(notificationData);
+    }
   }
 }

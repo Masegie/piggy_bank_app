@@ -1,82 +1,85 @@
 import 'package:dram1y/models/notification_data.dart';
 import 'package:dram1y/plugins/notification_plugin.dart';
+import 'package:dram1y/src/global_blocs/app_bloc.dart';
 import 'package:dram1y/src/pages/create_notification_page.dart';
 import 'package:dram1y/src/widgets/buttons/custom_wide_flat_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
   _NotificationPageState createState() => _NotificationPageState();
 }
-
-class _NotificationPageState extends State<NotificationPage> {
+ 
+class _NotificationPageState extends State<NotificationPage> with SingleTickerProviderStateMixin{
   final NotificationPlugin _notificationPlugin = NotificationPlugin();
   Future<List<PendingNotificationRequest>> notificationFuture;
+
+  AnimationController _fadeInController;
 
   @override
   void initState() { 
     super.initState();
+      _fadeInController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
     notificationFuture = _notificationPlugin.getScheduledNotifications();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _fadeInController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
     return Center(
       child: Column(
         children: <Widget>[
-          FutureBuilder<List<PendingNotificationRequest>>(
-            future: notificationFuture,
-            initialData: [],
+          StreamBuilder<List<NotificationData>>(
+            stream: notificationBloc.outNotifications,
             builder: (context, snapshot) {
-              final notifications = snapshot.data;
-              if(notifications.isEmpty)
-                return Expanded(
-                  child: Center(
-                    child: Container(
-                      height: 300,
-                      width: 300,
-                      child: Placeholder(),
+              if (snapshot.hasData) {
+                final notifications = snapshot.data;
+                _fadeInController.forward();
+                if (notifications.isEmpty)
+                  return Expanded(
+                    child: Center(
+                      child: Image.asset(
+                        'assets/sign_in_icon.png',
+                        width: 300,
+                        height: 300,
+                      ),
                     ),
+                  );
+                return Expanded(
+                  child: AnimatedBuilder(
+                    animation: _fadeInController,
+                    builder: (context, child) {
+                      return Opacity(
+                        opacity: _fadeInController.value,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(12),
+                          itemCount: notifications.length,
+                          itemBuilder: (context, index) {
+                            final notification = notifications[index];
+                            return NotificationTile(
+                              notification: notification,
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 );
-              return Expanded(
-                child: ListView.builder(
-                  itemCount: notifications.length,
-                  itemBuilder: (context, index) {
-                    final notification = notifications[index];
-                    return NotificationTile(notification: notification,
-                    deleteNotification: dismissNotification,
-                    );
-                  },
-                ),
-              );
+              }
+              return Expanded(child: SizedBox());
             },
           ),
-          // FlatButton(
-          //   padding: EdgeInsets.all(0),
-          //   onPressed: navigateToNotificationCreation,
-          //   shape: RoundedRectangleBorder(
-          //     borderRadius: BorderRadius.only(
-          //       bottomLeft: Radius.circular(5),
-          //       bottomRight: Radius.circular(5),
-          //     ),
-          //   ),
-          //   color: Colors.blue.shade300,
-          //   child: Container(
-          //     alignment: Alignment.center,
-          //     height: 50,
-          //     width: double.infinity,
-          //     child: Text(
-          //       'create',
-          //       style: TextStyle(
-          //         color: Colors.blue.shade900,
-          //         fontSize: 20,
-          //         fontWeight: FontWeight.bold,
-          //       ),  
-          //     ),
-          //   ),
-          // )
           CustomWideFlatButton(
             onPressed: navigateToNotificationCreation,
             backgroundColor: Colors.blue.shade300,
@@ -115,21 +118,14 @@ class NotificationTile extends StatelessWidget {
     @required this.deleteNotification, 
   }) : super(key: key);
 
-  final PendingNotificationRequest notification;
   final Function(int id) deleteNotification;
+  final NotificationData notification;
 
   @override
   Widget build(BuildContext context) {
+    final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
     final textTheme = Theme.of(context).textTheme;
     return Card(
-      // child: ListTile(
-      //   title: Text(notification.title),
-      //   subtitle: Text(notification.body),
-      //   trailing: IconButton(
-      //     onPressed: () => deleteNotification(notification.id),
-      //     icon: Icon(Icons.delete)
-      //   ),
-      // ),
       elevation: 6,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -150,7 +146,7 @@ class NotificationTile extends StatelessWidget {
                   ),
                   smallHeight,
                   Text(
-                    notification.body,
+                    notification.description,
                     style: textTheme.subtitle.copyWith(
                       fontWeight: FontWeight.normal,
                     ),
@@ -165,7 +161,7 @@ class NotificationTile extends StatelessWidget {
                       ),
                       SizedBox(width: 12),
                       Text(
-                        '12:42',
+                        '${notification.hour.toString().padLeft(2, '0')}:${notification.minute.toString().padLeft(2, '0')}',
                         style: textTheme.headline.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey.shade800,
@@ -177,7 +173,7 @@ class NotificationTile extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () => deleteNotification(notification.id),
+              onPressed: () => notificationBloc.removeNotification(notification),
               icon: Icon(Icons.delete, size: 32),
             )
           ],
