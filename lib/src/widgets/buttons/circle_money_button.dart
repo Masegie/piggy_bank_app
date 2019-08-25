@@ -94,8 +94,7 @@ class DepositMoneyWithAmount extends StatelessWidget {
                 opacity: fadeInController.value,
                 child: Column(
                   children: <Widget>[
-                     
-                    Text('Deposit ${selectedAmount}ml'),
+                    Text('Deposit Rp.$selectedAmount.-'),
                   ],
                 ),
               );

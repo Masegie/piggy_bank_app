@@ -23,11 +23,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
             SizedBox(height: 100, width: double.infinity),
             smallTextSpace,
             title(textTheme),
-            smallTextSpace,
+            bigTextSpace,
             subTitle(textTheme),
+            smallTextSpace,
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   OutlineButton(
                     padding: const EdgeInsets.symmetric(horizontal: 42,vertical: 16),
@@ -69,6 +70,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
   Widget get smallTextSpace => SizedBox(height: 8);
+  Widget get bigTextSpace => SizedBox(height: 58);
   
   Text title(TextTheme textTheme) {
     return Text(
@@ -82,7 +84,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Text subTitle(TextTheme textTheme) {
     return Text(
       'Set your dream goal!',
-      style: textTheme.subtitle.copyWith(fontWeight: FontWeight.w400),
+      style: textTheme.subtitle.copyWith(
+        fontSize: 20,
+      ),
     );
   }
 }
