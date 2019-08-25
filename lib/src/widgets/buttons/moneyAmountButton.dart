@@ -1,4 +1,6 @@
+import 'package:dram1y/src/global_blocs/app_bloc.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
+import 'package:dram1y/src/utils/asset_util.dart';
 import 'package:dram1y/src/widgets/custom_amount_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,12 +15,12 @@ class MoneyAmountButton extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    final depositBloc = Provider.of<DepositBloc>(context);
+    final depositBloc = Provider.of<AppBloc>(context).depositBloc;
     return Container(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Expanded(
-            child: InkWell(
+          GestureDetector(
               onTap: () {
                 if(amount == 0) {
                   setCustomAmount(depositBloc,context);
@@ -31,10 +33,12 @@ class MoneyAmountButton extends StatelessWidget {
                 initialData: 1,
                 builder: (context,snapshot) {
                   final selectedAmount = snapshot.data;
-                  return Placeholder(color: selectedAmount == amount ? Colors.blue : Colors.black);
+                  return CupImage(
+                  amount: amount,
+                  isSelected: selectedAmount == amount,
+                );
                 },
               ),
-            ),
           ),
           SizedBox(height: 8),
           if (amount != 0 ) Text('RP. $amount') else Text('Custom'),
@@ -55,5 +59,30 @@ class MoneyAmountButton extends StatelessWidget {
 
   void setAmount(DepositBloc depositBloc) {
     depositBloc.setDepositAmount = amount;
+  }
+
+}
+
+class CupImage extends StatelessWidget {
+  const CupImage({
+    Key key,
+    @required this.amount,
+    @required this.isSelected,
+    this.width = 50,
+    this.height = 50,
+  }) : super(key: key);
+
+  final int amount;
+  final bool isSelected;
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      AssetUtil.assetImage(amount),
+      width: isSelected ? width + 10 : width,
+      height: isSelected ? height + 10 : height,
+    );
   }
 }

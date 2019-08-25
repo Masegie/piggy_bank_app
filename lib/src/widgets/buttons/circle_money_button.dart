@@ -1,9 +1,10 @@
 import 'dart:math';
 
-import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
-import 'package:dram1y/src/global_blocs/user_bloc.dart';
+import 'package:dram1y/src/global_blocs/app_bloc.dart';
+import 'package:dram1y/src/utils/asset_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CircleButton extends StatefulWidget {
   const CircleButton({
@@ -14,28 +15,28 @@ class CircleButton extends StatefulWidget {
   _CircleButtonState createState() => _CircleButtonState();
 }
 
-class _CircleButtonState extends State<CircleButton> with SingleTickerProviderStateMixin {
+class _CircleButtonState extends State<CircleButton> with TickerProviderStateMixin {
   AnimationController _animationController;
-  Animation _curveAnimation;
+
+  AnimationController _fadeInController;
 
  @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 600),
+      duration: Duration(milliseconds: 800),
     );
-
-    _curveAnimation = CurvedAnimation(
-      parent: _animationController, 
-      curve: Curves.easeOut
+    _fadeInController =  AnimationController(
+     vsync: this,
+      duration: const Duration(milliseconds: 300),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final userBloc = Provider.of<UserBloc>(context);
-    final depositBloc = Provider.of<DepositBloc>(context);
+    final depositBloc = Provider.of<AppBloc>(context).depositBloc;
+    
     return MaterialButton(
      onPressed: () => depositBloc.depositMoney(),
      height: 150,
@@ -51,12 +52,11 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
         alignment: Alignment.center,
         children: <Widget>[
           ProgressCircle(
-            userBloc: userBloc, 
-            depositBloc: depositBloc, 
-            animationController: _animationController, 
-            curveAnimation: _curveAnimation
+            animationController: _animationController,
           ),
-          DepositMoneyWithAmount(depositBloc: depositBloc)
+          DepositMoneyWithAmount(
+            fadeInController: _fadeInController,
+          )
         ],
       )
     );
@@ -66,90 +66,94 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
   void dispose() {
     super.dispose();
     _animationController.dispose();
-  }
-}
-
-class ProgressCircle extends StatelessWidget {
-  const ProgressCircle({
-    Key key,
-    @required this.userBloc,
-    @required this.depositBloc,
-    @required AnimationController animationController,
-    @required Animation curveAnimation,
-  }) : _animationController = animationController, _curveAnimation = curveAnimation, super(key: key);
-
-  final UserBloc userBloc;
-  final DepositBloc depositBloc;
-  final AnimationController _animationController;
-  final Animation _curveAnimation;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-     height: 150,
-     width: 150,
-     decoration: BoxDecoration(
-       color: Colors.white,
-       shape: BoxShape.circle,
-     ),
-     child: StreamBuilder<int>(
-      stream: userBloc.outMaxMoney,
-      initialData: 2,
-      builder: (context, snapshot) {
-        final totalMoney = snapshot.data;
-        return StreamBuilder<int>(
-          stream: depositBloc.outDepositsAmount,
-          initialData: 1,
-          builder: (context, snapshot) {
-            final moneySaved = snapshot.data;
-            _animationController.animateTo(moneySaved/totalMoney );
-            return AnimatedBuilder(
-              animation: _curveAnimation,
-              builder: (context,child) {
-               return CustomPaint(
-                 foregroundPainter: CircleProgressPainter (
-                 completeColor: Colors.green[300],
-                 lineColor: Colors.red[300],
-                 completePercent: _curveAnimation.value,
-                 ),
-               );
-             },
-           );
-          }
-        );
-       }
-     ),
-     );
+    _fadeInController.dispose();
   }
 }
 
 class DepositMoneyWithAmount extends StatelessWidget {
   const DepositMoneyWithAmount({
     Key key,
-    @required this.depositBloc,
+    @required this.fadeInController,
     }) : super(key: key);
 
-    final DepositBloc depositBloc;
+     final AnimationController fadeInController;
 
   @override
   Widget build(BuildContext context) {
+    final depositBloc = Provider.of<AppBloc>(context).depositBloc;
     return StreamBuilder<int>(
       stream: depositBloc.outSelectedAmount,
-      initialData: 1,
       builder: (context, snapshot) {
-        final selectedAmount = snapshot.data;
-        return Column(
-          children: <Widget>[
-            SizedBox(
-              height: 60,
-              width: 60,
-              child: Placeholder(),
-            ),
-            SizedBox(height: 4),
-            Text('Rp.$selectedAmount')
-          ],
-        );
+        if (snapshot.hasData) {
+          final selectedAmount = snapshot.data;
+          fadeInController.forward();
+          return AnimatedBuilder(
+            animation: fadeInController,
+            builder: (context, child) {
+              return Opacity(
+                opacity: fadeInController.value,
+                child: Column(
+                  children: <Widget>[
+                     
+                    Text('Deposit ${selectedAmount}ml'),
+                  ],
+                ),
+              );
+            },
+          );
+        }
+        return SizedBox();
       },
+    );
+  }
+}
+
+class ProgressCircle extends StatelessWidget {
+  const ProgressCircle({
+    Key key,
+    @required AnimationController animationController,
+  }) : _animationController = animationController,
+   super(key: key);
+
+  final AnimationController _animationController;
+
+  @override
+  Widget build(BuildContext context) {
+    final depositBloc = Provider.of<AppBloc>(context).depositBloc;
+    final userbloc = Provider.of<AppBloc>(context).userBloc;
+    final observable = Observable.combineLatest2<int,int,double>(userbloc.outMaxMoney, depositBloc.outDepositsAmount, (
+      maxMoney,
+      depositedMoney,
+    ) {
+      return depositedMoney / maxMoney;
+    }
+    );
+    return Container(
+     height: 150,
+     width: 150,
+     decoration: BoxDecoration(
+       color: Theme.of(context).cardColor,
+       shape: BoxShape.circle,
+     ),
+     child: StreamBuilder<double>(
+      stream: observable,
+      initialData: 0,
+          builder: (context, snapshot) {
+            _animationController.animateTo(snapshot.data);
+            return AnimatedBuilder(
+              animation: _animationController,
+              builder: (context,child) {
+               return CustomPaint(
+                 foregroundPainter: CircleProgressPainter (
+                  completeColor: Colors.green[300],
+                  lineColor: Colors.red[300],
+                  completePercent: _animationController.value,
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -164,8 +168,6 @@ class DepositMoneyWithAmount extends StatelessWidget {
     final Color completeColor;
     final double completePercent;
     final double lineWidth = 8;
-
-  
 
     @override
     void paint(Canvas canvas, Size size){
@@ -188,7 +190,13 @@ class DepositMoneyWithAmount extends StatelessWidget {
 
         double arcAngle = 2 * pi * (completePercent);
 
-        canvas.drawArc(Rect.fromCircle(center:center, radius: radius), -pi / 2, arcAngle, false, completeLine);
+        canvas.drawArc(
+          Rect.fromCircle(center:center, radius: radius), 
+          -pi / 2, 
+          arcAngle, 
+          false, 
+          completeLine
+        );
     }
 
     @override

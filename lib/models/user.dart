@@ -29,4 +29,9 @@ class User{
   DateTime lastLoggedIn;
   int maxMoneyPerDay;
   String dreamName;
+
+  @override
+  String toString() {
+    return 'lastLoggedIn: $lastLoggedIn, maxMoneyPerDay: $maxMoneyPerDay, dreamName: $dreamName';
+  }
 }

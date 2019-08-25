@@ -1,6 +1,9 @@
+import 'package:dram1y/src/global_blocs/app_bloc.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'buttons/custom_wide_flat_button.dart';
 
 class CustomAmountPopup extends StatefulWidget {
   @override
@@ -13,7 +16,7 @@ class _CustomAmountPopupState extends State<CustomAmountPopup> {
 
   @override
   Widget build(BuildContext context) {
-    final depositBloc = Provider.of<DepositBloc>(context);
+    final depositBloc = Provider.of<AppBloc>(context).depositBloc;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       child: Column(
@@ -36,7 +39,7 @@ class _CustomAmountPopupState extends State<CustomAmountPopup> {
                 'Change the amount field with your custom amount',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.subtitle.copyWith(
-                  color: Colors.black,
+                 // color: Colors.black,
                 ),
               ),
               largeSpace,
@@ -67,28 +70,13 @@ class _CustomAmountPopupState extends State<CustomAmountPopup> {
           ),
         ),
         largeSpace,
-        okButton(depositBloc,context),
+         CustomWideFlatButton(
+            text: 'Ok',
+            onPressed: () => setValue(_controller.text, depositBloc),
+            backgroundColor: Theme.of(context).accentColor,
+            foregroundColor: Colors.blue.shade900,
+          ),
       ],),
-    );
-  }
-
-  FlatButton okButton(DepositBloc depositBloc, BuildContext context) {
-    return FlatButton(
-      padding: const EdgeInsets.all(0),
-      onPressed: () => setValue(_controller.text, depositBloc),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(5),
-          bottomRight: Radius.circular(5),
-        )
-      ),
-      color: Theme.of(context).accentColor,
-      child: Container(
-        alignment: Alignment.center,
-        height: 50,
-        width: double.infinity,
-        child: Text('Ok'),
-      ),
     );
   }
 

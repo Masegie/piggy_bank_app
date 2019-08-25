@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 class DepositBloc implements BlocBase{
   StreamSubscription _depositStreamSubscription;
   List<Deposit> _depositsToday = List();
-  int _selectedMoneyAmount = 400;
+  int _selectedDepositAmount = 400;
 
   final _depositController = BehaviorSubject<List<Deposit>>();
   Function(List<Deposit>) get _inDeposits => _depositController.sink.add;
@@ -28,11 +28,11 @@ class DepositBloc implements BlocBase{
       _inDeposits(_depositsToday);
     });
 
-    _inSelectedAmount(_selectedMoneyAmount);
+    _inSelectedAmount(_selectedDepositAmount);
   }
 
   Future<void> depositMoney() async {
-    final deposit = Deposit(DateTime.now(), _selectedMoneyAmount);
+    final deposit = Deposit(DateTime.now(), _selectedDepositAmount);
     FirestoreDepositService.depositMoney(deposit);
   }
 
@@ -41,8 +41,8 @@ class DepositBloc implements BlocBase{
   }
 
   set setDepositAmount(int amount) {
-    _selectedMoneyAmount = amount;
-    _inSelectedAmount(_selectedMoneyAmount);
+    _selectedDepositAmount = amount;
+    _inSelectedAmount(_selectedDepositAmount);
   }
 
   @override

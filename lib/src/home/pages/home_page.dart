@@ -15,28 +15,16 @@ class DepositPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final depositBloc = Provider.of<DepositBloc>(context);
-    final userBloc = Provider.of<UserBloc>(context);
     return Column(
         children: <Widget>[
           Expanded(
             flex: 4,
-            child: StreamBuilder<String>(
-              stream: userBloc.outSelectedName,
-              initialData: '1',
-              builder: (context, snapshot) {
-                final dreamName = snapshot.data;
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    if(dreamName != "-")
-                    MoneyTodayLabel(),
-                    if(dreamName != "-")
-                    CircleButton(),
-                  //  Text('$dreamName'),
-                 //   DreamPage(),
-                  ],
-                );
-              }
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                MoneyTodayLabel(),
+                CircleButton(),
+              ],
             )
           ),
           Expanded(
