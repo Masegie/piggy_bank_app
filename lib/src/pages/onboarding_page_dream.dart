@@ -1,18 +1,16 @@
-import 'package:dram1y/src/pages/onboarding_page_dream.dart';
-import 'package:dram1y/src/widgets/popups/custom_amount_onboarding_popup.dart';
 import 'package:dram1y/src/widgets/popups/custom_dream_onboarding_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/root_page.dart';
 import 'package:dram1y/src/widgets/custom_wide_flat_button.dart';
 
-class OnboardingPage extends StatefulWidget {
+class OnboardingDreamPage extends StatefulWidget {
   @override
-  _OnboardingPageState createState() => _OnboardingPageState();
+  _OnboardingDreamPageState createState() => _OnboardingDreamPageState();
 }
 
-class _OnboardingPageState extends State<OnboardingPage> {
-  int selectedAmount = 2500;
+class _OnboardingDreamPageState extends State<OnboardingDreamPage> {
+  String selectedName = 'Membeli Mac Book Pro';
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +33,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   OutlineButton(
                     padding: const EdgeInsets.symmetric(horizontal: 42,vertical: 16),
                     onPressed: () async {
-                      int amount = await showDialog(
+                      String amount = await showDialog(
                         context: context,
                         barrierDismissible: true,
                         builder: (context) {
-                          return CustomAmountOnboardingPopup();
+                          return CustomDreamOnboardingPopup();
                         }
                       );
-                      setState(() => selectedAmount = amount);
+                      setState(() => selectedName = amount);
                     },
                     child: Text(
-                      'Rp. $selectedAmount',
+                      '$selectedName',
                       style: textTheme.title,
                     ),
                   ),
@@ -56,12 +54,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
               backgroundColor: Colors.blue.shade300,
               foregroundColor: Colors.blue.shade900,
               isRoundedAtBottom: false,
-              text: 'Next',
+              text: 'Start',
               onPressed: () async {
-                await FirestoreUserService.updateTotalMoney(selectedAmount);
+                await FirestoreUserService.updateDreamName(selectedName);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => OnboardingDreamPage(),
+                    builder: (context) => RootPage(),
                   )
                 );
               },
@@ -85,7 +83,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   Text subTitle(TextTheme textTheme) {
     return Text(
-      'Set your dream goal!',
+      'Set your dream name!',
       style: textTheme.subtitle.copyWith(
         fontSize: 20,
       ),

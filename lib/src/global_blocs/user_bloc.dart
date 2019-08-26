@@ -21,7 +21,7 @@ class UserBloc implements BlocBase{
 
   Stream<int> get outMaxMoney => outUser.map((user) => user.maxMoneyPerDay);
 
-  //Stream<String> get outDreamName =>outUser.map((user) => user.dreamName);
+  Stream<String> get outDreamName =>outUser.map((user) => user.dreamName);
 
   Future<void> init() async {
     await FirestoreUserService.checkAndCreateUser();

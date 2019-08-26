@@ -40,6 +40,19 @@ class FirestoreUserService {
     }
   }
 
+    static Future<void> updateDreamName(String amount) async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser();
+    Map<String, dynamic> update = Map();
+    update.putIfAbsent(User.dreamNameField, () => amount);
+
+    try {
+      await Firestore.instance.collection(FirestoreConstants.userCollection).document(firebaseUser.uid).updateData(update);
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+  }
+
   static Future<void> updateLastLoggedIn() async{
     final firebaseUser = await FirebaseAuth.instance.currentUser();
     Map<String, dynamic> update = Map();
