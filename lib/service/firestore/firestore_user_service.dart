@@ -65,4 +65,17 @@ class FirestoreUserService {
         throw e;
       }
   }
+
+  static Future<void> updateDueDate(DateTime date) async{
+    final firebaseUser = await FirebaseAuth.instance.currentUser();
+    Map<String, dynamic> update = Map();
+    update.putIfAbsent(User.dueDateField,() => date);
+
+    try {
+        Firestore.instance.collection(FirestoreConstants.userCollection).document(firebaseUser.uid).updateData(update);
+      } catch (e) {
+        print(e);
+        throw e;
+      }
+  }
 }

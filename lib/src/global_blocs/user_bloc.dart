@@ -10,6 +10,7 @@ class UserBloc implements BlocBase{
   User _user;
   StreamSubscription _userStreamSubscription;
   String _selectedDreamName = "duno";
+  DateTime _selectedDueDate = DateTime.now();
 
   final _userController = BehaviorSubject<User>();
   Function(User) get _inUser => _userController.sink.add;
@@ -19,9 +20,15 @@ class UserBloc implements BlocBase{
   Function(String) get _inSelectedName => _selectedDreamNameController.sink.add;
   Stream<String> get outSelectedName => _selectedDreamNameController.stream;
 
+  final _selectedDueDateController = BehaviorSubject<DateTime>();
+  Function(DateTime) get _inSelectedDueDate => _selectedDueDateController.sink.add;
+  Stream<DateTime> get outSelectedDueDate => _selectedDueDateController.stream;
+
   Stream<int> get outMaxMoney => outUser.map((user) => user.maxMoneyPerDay);
 
   Stream<String> get outDreamName =>outUser.map((user) => user.dreamName);
+
+  Stream<DateTime> get outDueDate =>outUser.map((user) => user.dueDate);
 
   Future<void> init() async {
     await FirestoreUserService.checkAndCreateUser();
@@ -33,6 +40,7 @@ class UserBloc implements BlocBase{
     });
     //update login terakhir
     _inSelectedName(_selectedDreamName);
+    _inSelectedDueDate(_selectedDueDate);
   }
 
   setDreamName(String name) {
@@ -40,10 +48,16 @@ class UserBloc implements BlocBase{
     _inSelectedName(_selectedDreamName);
   }
 
+  setDueDate(DateTime dueDate) {
+    _selectedDueDate = dueDate;
+    _inSelectedDueDate(_selectedDueDate);
+  }
+
   @override
   void dispose(){
     _userController.close();
     _selectedDreamNameController.close();
+    _selectedDueDateController.close();
     _userStreamSubscription.cancel();
   }
 }

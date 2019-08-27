@@ -3,6 +3,7 @@ import 'package:dram1y/src/global_blocs/user_bloc.dart';
 //import 'package:dram1y/src/home/pages/dream_page.dart';
 import 'package:dram1y/src/widgets/buttons/circle_money_button.dart';
 import 'package:dram1y/src/widgets/dreamName_label.dart';
+import 'package:dram1y/src/widgets/dueDate_label.dart';
 import 'package:dram1y/src/widgets/money_entry_tile.dart';
 import 'package:dram1y/src/widgets/money_today_label.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class DepositPage extends StatelessWidget {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                DueDateLabel(),
                 DreamNameLabel(),
                 MoneyTodayLabel(),
                 CircleButton(),

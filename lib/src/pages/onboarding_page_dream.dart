@@ -1,7 +1,8 @@
+import 'package:dram1y/src/pages/onboarding_page.dart';
+import 'package:dram1y/src/pages/onboarding_page_time.dart';
 import 'package:dram1y/src/widgets/popups/custom_dream_onboarding_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
-import 'package:dram1y/src/root_page.dart';
 import 'package:dram1y/src/widgets/custom_wide_flat_button.dart';
 
 class OnboardingDreamPage extends StatefulWidget {
@@ -54,12 +55,12 @@ class _OnboardingDreamPageState extends State<OnboardingDreamPage> {
               backgroundColor: Colors.blue.shade300,
               foregroundColor: Colors.blue.shade900,
               isRoundedAtBottom: false,
-              text: 'Start',
+              text: 'Next',
               onPressed: () async {
                 await FirestoreUserService.updateDreamName(selectedName);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => RootPage(),
+                    builder: (context) => OnboardingTimePage(),
                   )
                 );
               },

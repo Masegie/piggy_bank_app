@@ -1,20 +1,23 @@
-import 'package:dram1y/src/pages/onboarding_page_dream.dart';
-import 'package:dram1y/src/widgets/popups/custom_amount_onboarding_popup.dart';
+import 'package:dram1y/src/global_blocs/app_bloc.dart';
+import 'package:dram1y/src/global_blocs/user_bloc.dart';
+import 'package:dram1y/src/pages/onboarding_page.dart';
+import 'package:dram1y/src/widgets/popups/custom_dream_onboarding_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
-import 'package:dram1y/src/root_page.dart';
 import 'package:dram1y/src/widgets/custom_wide_flat_button.dart';
+import 'package:provider/provider.dart';
 
-class OnboardingPage extends StatefulWidget {
+class OnboardingTimePage extends StatefulWidget {
   @override
-  _OnboardingPageState createState() => _OnboardingPageState();
+  _OnboardingTimePageState createState() => _OnboardingTimePageState();
 }
 
-class _OnboardingPageState extends State<OnboardingPage> {
-  int selectedAmount = 2500;
+class _OnboardingTimePageState extends State<OnboardingTimePage> {
+  DateTime selectedTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    final userBloc = Provider.of<AppBloc>(context).userBloc;
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Center(
@@ -33,18 +36,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 children: <Widget>[
                   OutlineButton(
                     padding: const EdgeInsets.symmetric(horizontal: 42,vertical: 16),
-                    onPressed: () async {
-                      int amount = await showDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (context) {
-                          return CustomAmountOnboardingPopup();
-                        }
-                      );
-                      setState(() => selectedAmount = amount);
-                    },
-                    child: Text(
-                      'Rp. $selectedAmount',
+                    onPressed: selectTime,
+                     child: Text(
+                      '$selectedTime',
                       style: textTheme.title,
                     ),
                   ),
@@ -57,10 +51,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
               isRoundedAtBottom: false,
               text: 'Next',
               onPressed: () async {
-                await FirestoreUserService.updateTotalMoney(selectedAmount);
+                await FirestoreUserService.updateDueDate(selectedTime);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => RootPage(),
+                    builder: (context) => OnboardingPage(),
                   )
                 );
               },
@@ -84,10 +78,31 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   Text subTitle(TextTheme textTheme) {
     return Text(
-      'Set your dream goal!',
+      'Set your due date!',
       style: textTheme.subtitle.copyWith(
         fontSize: 20,
       ),
     );
+  }
+
+  Future<void> selectTime() async {
+    final time = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2018),
+      lastDate: DateTime(2030),
+    );
+    if (time != null) {
+      setState(() {
+        selectedTime = time;
+      });
+    }
+  }
+
+  void createNotification(UserBloc userBloc) {
+    final dueDate = selectedTime;
+    userBloc.setDueDate(dueDate);
+    Navigator.of(context).pop(dueDate);
+    
   }
 }

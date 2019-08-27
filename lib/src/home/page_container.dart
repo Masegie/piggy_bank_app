@@ -4,7 +4,7 @@ import 'package:dram1y/src/global_blocs/auth/auth_bloc.dart';
 import 'package:dram1y/src/home/pages/home_page.dart';
 import 'package:dram1y/src/home/pages/money_page.dart';
 import 'package:dram1y/src/home/pages/notification_page.dart';
-import 'package:dram1y/src/pages/onboarding_page.dart';
+import 'package:dram1y/src/pages/onboarding_page_dream.dart';
 import 'package:dram1y/src/widgets/popups/sync_account_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +46,7 @@ class _PageContainerState extends State<PageContainer> {
         //replace screen with onboarding page
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => OnboardingPage(),
+            builder: (context) => OnboardingDreamPage(),
           ),
         );
       }
