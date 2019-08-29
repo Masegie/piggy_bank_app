@@ -38,4 +38,17 @@ class FirestoreDepositService {
       .document(deposit.id)
       .delete();
   }
+
+  static Future<void> updateTotalDeposit(int amount) async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser();
+    Map<String, dynamic> update = Map();
+    update.putIfAbsent(Deposit.amountField, () => amount);
+
+    try {
+      await Firestore.instance.collection(FirestoreConstants.userCollection).document(firebaseUser.uid).updateData(update);
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+  }
 }

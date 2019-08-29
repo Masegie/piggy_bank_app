@@ -4,6 +4,7 @@ import 'package:dram1y/src/global_blocs/auth/auth_bloc.dart';
 import 'package:dram1y/src/home/pages/home_page.dart';
 import 'package:dram1y/src/home/pages/money_page.dart';
 import 'package:dram1y/src/home/pages/notification_page.dart';
+import 'package:dram1y/src/home/pages/profile_page.dart';
 import 'package:dram1y/src/pages/onboarding_page_dream.dart';
 import 'package:dram1y/src/widgets/popups/sync_account_popup.dart';
 import 'package:flutter/material.dart';
@@ -67,15 +68,19 @@ class _PageContainerState extends State<PageContainer> {
             onSelected: (value) => onMenuSelection(value,authBloc),
             itemBuilder: (context){
               return[
-              const PopupMenuItem<PopupMenuChoices>(
-                value: PopupMenuChoices.signOut,
-                child: Text('sign out'),
+                const PopupMenuItem<PopupMenuChoices>(
+                  value: PopupMenuChoices.profile,
+                  child: Text('Profile'),
                 ),
-               if (isAnonymous)
+                if (isAnonymous)
                 const PopupMenuItem<PopupMenuChoices>(
                   value: PopupMenuChoices.syncPopup,
                   child: Text('sync account'),
-                )
+                ),
+                const PopupMenuItem<PopupMenuChoices>(
+                  value: PopupMenuChoices.signOut,
+                  child: Text('sign out'),
+                ),
               ];
             },
           )
@@ -107,6 +112,13 @@ class _PageContainerState extends State<PageContainer> {
 
   void onMenuSelection(PopupMenuChoices value, AuthBloc auth) async {
     switch (value) {
+      case PopupMenuChoices.profile:
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(),
+          )
+        );
+        break;
       case PopupMenuChoices.signOut:
         auth.signOut();
         break;

@@ -40,7 +40,7 @@ class UserBloc implements BlocBase{
     });
     //update login terakhir
     _inSelectedName(_selectedDreamName);
-    _inSelectedDueDate(_selectedDueDate);
+    //_inSelectedDueDate(_selectedDueDate);
   }
 
   setDreamName(String name) {

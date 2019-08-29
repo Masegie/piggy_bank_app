@@ -34,14 +34,14 @@ class _OnboardingDreamPageState extends State<OnboardingDreamPage> {
                   OutlineButton(
                     padding: const EdgeInsets.symmetric(horizontal: 42,vertical: 16),
                     onPressed: () async {
-                      String amount = await showDialog(
+                      String name = await showDialog(
                         context: context,
                         barrierDismissible: true,
                         builder: (context) {
                           return CustomDreamOnboardingPopup();
                         }
                       );
-                      setState(() => selectedName = amount);
+                      setState(() => selectedName = name);
                     },
                     child: Text(
                       '$selectedName',
