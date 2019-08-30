@@ -17,6 +17,7 @@ class _OnboardingDreamPageState extends State<OnboardingDreamPage> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -32,7 +33,9 @@ class _OnboardingDreamPageState extends State<OnboardingDreamPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   OutlineButton(
-                    padding: const EdgeInsets.symmetric(horizontal: 42,vertical: 16),
+                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10)),
+                    color: Colors.grey.shade300,
+                    padding: const EdgeInsets.symmetric(horizontal: 22,vertical: 16),
                     onPressed: () async {
                       String name = await showDialog(
                         context: context,
@@ -45,39 +48,42 @@ class _OnboardingDreamPageState extends State<OnboardingDreamPage> {
                     },
                     child: Text(
                       '$selectedName',
-                      style: textTheme.title,
+                      style: TextStyle(fontFamily: 'Raleway',fontSize: 17),
                     ),
-                  ),
+                  ),bigTextSpace,
+                  CustomWideFlatButton(
+                    backgroundColor: Colors.green.shade300,
+                    foregroundColor: Colors.white,
+                    isRoundedAtBottom: false,
+                    onPressed: () async {
+                      await FirestoreUserService.updateDreamName(selectedName);
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => OnboardingTimePage(),
+                        )
+                      );
+                    },
+                  )
                 ],
               ),
             ),
-            CustomWideFlatButton(
-              backgroundColor: Colors.blue.shade300,
-              foregroundColor: Colors.blue.shade900,
-              isRoundedAtBottom: false,
-              text: 'Next',
-              onPressed: () async {
-                await FirestoreUserService.updateDreamName(selectedName);
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => OnboardingTimePage(),
-                  )
-                );
-              },
-            )
+            
           ],
         ),
       ),
     );
   }
-  Widget get smallTextSpace => SizedBox(height: 8);
+  Widget get smallTextSpace => SizedBox(height: 20);
   Widget get bigTextSpace => SizedBox(height: 58);
   
   Text title(TextTheme textTheme) {
     return Text(
       "Let's start reaching your dreams!",
-      style: textTheme.title.copyWith(
-        fontSize: 24,
+      style: TextStyle(
+        fontFamily: 'Raleway',
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
+        color: Colors.green
       ),
     );
   }
@@ -85,8 +91,11 @@ class _OnboardingDreamPageState extends State<OnboardingDreamPage> {
   Text subTitle(TextTheme textTheme) {
     return Text(
       'Set your dream name!',
-      style: textTheme.subtitle.copyWith(
+      style: TextStyle(
+        fontFamily: 'Raleway',
         fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.green
       ),
     );
   }

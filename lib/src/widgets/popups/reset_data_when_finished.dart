@@ -1,6 +1,5 @@
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/pages/onboarding_page_dream.dart';
-import 'package:dram1y/src/widgets/buttons/custom_wide_flat_button.dart';
 import 'package:flutter/material.dart';
 
 class ResetDataWhenFinished extends StatefulWidget {

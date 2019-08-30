@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/widgets/custom_wide_flat_button.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class OnboardingTimePage extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class _OnboardingTimePageState extends State<OnboardingTimePage> {
   Widget build(BuildContext context) {
     final userBloc = Provider.of<AppBloc>(context).userBloc;
     final textTheme = Theme.of(context).textTheme;
+    String formatDate = new DateFormat.yMMMd().format(selectedTime);
     return Scaffold(
       body: Center(
         child: Column(
@@ -38,40 +40,43 @@ class _OnboardingTimePageState extends State<OnboardingTimePage> {
                     padding: const EdgeInsets.symmetric(horizontal: 42,vertical: 16),
                     onPressed: selectTime,
                      child: Text(
-                      '$selectedTime',
-                      style: textTheme.title,
+                      '$formatDate',
+                      style: TextStyle(fontFamily: 'Raleway',fontSize: 17),
                     ),
-                  ),
+                  ),bigTextSpace,
+                  CustomWideFlatButton(
+                    backgroundColor: Colors.green.shade300,
+                    foregroundColor: Colors.white,
+                    isRoundedAtBottom: false,
+                    text: 'Next',
+                    onPressed: () async {
+                      await FirestoreUserService.updateDueDate(selectedTime);
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => OnboardingPage(),
+                        )
+                      );
+                    },
+                  )
                 ],
               ),
             ),
-            CustomWideFlatButton(
-              backgroundColor: Colors.blue.shade300,
-              foregroundColor: Colors.blue.shade900,
-              isRoundedAtBottom: false,
-              text: 'Next',
-              onPressed: () async {
-                await FirestoreUserService.updateDueDate(selectedTime);
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => OnboardingPage(),
-                  )
-                );
-              },
-            )
           ],
         ),
       ),
     );
   }
-  Widget get smallTextSpace => SizedBox(height: 8);
+  Widget get smallTextSpace => SizedBox(height: 20);
   Widget get bigTextSpace => SizedBox(height: 58);
   
   Text title(TextTheme textTheme) {
     return Text(
       "Let's start reaching your dreams!",
       style: textTheme.title.copyWith(
-        fontSize: 24,
+        fontFamily: 'Raleway',
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
+        color: Colors.green
       ),
     );
   }
@@ -80,7 +85,10 @@ class _OnboardingTimePageState extends State<OnboardingTimePage> {
     return Text(
       'Set your due date!',
       style: textTheme.subtitle.copyWith(
+        fontFamily: 'Raleway',
         fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.green
       ),
     );
   }

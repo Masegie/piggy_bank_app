@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class User{
   static const lastLoggendInField = 'lastLoggedIn';
   static const moneyPerDayField = 'moneyPerDay';

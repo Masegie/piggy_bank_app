@@ -45,39 +45,42 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     },
                     child: Text(
                       'Rp. $selectedAmount',
-                      style: textTheme.title,
+                      style: TextStyle(fontFamily: 'Raleway',fontSize: 17),
                     ),
-                  ),
+                  ),bigTextSpace,
+                  CustomWideFlatButton(
+                    backgroundColor: Colors.green.shade300,
+                    foregroundColor: Colors.white,
+                    isRoundedAtBottom: false,
+                    text: "Let's Start !",
+                    onPressed: () async {
+                      await FirestoreUserService.updateTotalMoney(selectedAmount);
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => RootPage(),
+                        )
+                      );
+                    },
+                  )
                 ],
               ),
             ),
-            CustomWideFlatButton(
-              backgroundColor: Colors.blue.shade300,
-              foregroundColor: Colors.blue.shade900,
-              isRoundedAtBottom: false,
-              text: 'Next',
-              onPressed: () async {
-                await FirestoreUserService.updateTotalMoney(selectedAmount);
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => RootPage(),
-                  )
-                );
-              },
-            )
           ],
         ),
       ),
     );
   }
-  Widget get smallTextSpace => SizedBox(height: 8);
+  Widget get smallTextSpace => SizedBox(height: 20);
   Widget get bigTextSpace => SizedBox(height: 58);
   
   Text title(TextTheme textTheme) {
     return Text(
       "Let's start reaching your dreams!",
       style: textTheme.title.copyWith(
-        fontSize: 24,
+        fontFamily: 'Raleway',
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
+        color: Colors.green
       ),
     );
   }
@@ -86,7 +89,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return Text(
       'Set your dream goal!',
       style: textTheme.subtitle.copyWith(
+        fontFamily: 'Raleway',
         fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.green
       ),
     );
   }
