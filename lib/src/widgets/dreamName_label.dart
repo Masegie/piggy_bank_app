@@ -45,7 +45,6 @@ class _DreamNameLabelState extends State<DreamNameLabel> with SingleTickerProvid
             stream: depositBloc.outDepositsAmount,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final moneyAmount  = snapshot.data;
                 _fadeInController.forward();
                 return AnimatedBuilder(
                   animation: _fadeInController,

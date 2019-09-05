@@ -3,6 +3,8 @@ import 'package:dram1y/src/widgets/buttons/anonymousSignInButton.dart';
 import 'package:dram1y/src/widgets/buttons/googleSignInButton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,11 +12,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final auth = Provider.of<AuthBloc>(context);
-
+    
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -75,4 +78,3 @@ class _LoginPageState extends State<LoginPage> {
         );
   }
 }
-

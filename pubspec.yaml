@@ -33,12 +33,20 @@ dependencies:
   shared_preferences: ^0.5.3+1
   datetime_picker_formfield: ^0.4.2
   intl: 0.15.8
+  firebase_core: any
+  firebase_database: ^3.0.7
 
 dev_dependencies:
   #pedantic: '1.7.0'
   flutter_test:
     sdk: flutter
-  
+
+  flutter_launcher_icons: "^0.7.3"
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/sign_in_icon.png"  
 
 
 # For information on the generic Dart part of this file, see the

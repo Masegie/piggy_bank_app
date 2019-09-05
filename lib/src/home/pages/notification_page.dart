@@ -67,9 +67,7 @@ class _NotificationPageState extends State<NotificationPage> with SingleTickerPr
                           itemCount: notifications.length,
                           itemBuilder: (context, index) {
                             final notification = notifications[index];
-                            return NotificationTile(
-                              notification: notification,
-                            );
+                           
                           },
                         ),
                       );
