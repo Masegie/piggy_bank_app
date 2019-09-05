@@ -10,29 +10,11 @@ class IotActifity extends StatefulWidget {
 
 class _IotActifityState extends State<IotActifity> {
  
-  
-  final DatabaseReference database = FirebaseDatabase.instance.reference().child("test");
   final DatabaseReference iotDatabase = FirebaseDatabase.instance.reference().child("distance");
-  sendData() {
-    database.push().set({
-      'name' : 'Chuck',
-      'lastName' : 'Norris'
-    });
-  }
-
-  readData(){
-    database.once().then((DataSnapshot dataSnapShot){
-      print(dataSnapShot.value);
-    });
-  }
-
-  readDataIot(){
-    iotDatabase.once().then((DataSnapshot dataSnapShot){
-      print(dataSnapShot.value);
-    });
-  }
+  
   @override
   Widget build(BuildContext context) {
+    var databaseIot = FirebaseDatabase.instance.reference().child("distance");
     return Scaffold(
       appBar: AppBar(
         title: Text("Firebase"),
@@ -40,11 +22,12 @@ class _IotActifityState extends State<IotActifity> {
       ),
       body: StreamBuilder(
         
-        stream: iotDatabase.onValue,
+        stream: databaseIot.onValue,
         initialData: 0,
-        builder: (context, snapshot) {
-          final text = snapshot.data;
-          return Text("$text");
+        builder: (context, snap) {
+          DataSnapshot snapshot = snap.data.snapshot;
+          int distance = snapshot.value;
+          return Text("$distance");
         },
       )
     );
