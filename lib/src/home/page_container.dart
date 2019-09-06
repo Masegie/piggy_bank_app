@@ -1,6 +1,7 @@
 import 'package:dram1y/models/user.dart';
 import 'package:dram1y/src/enums/enums.dart';
 import 'package:dram1y/src/global_blocs/auth/auth_bloc.dart';
+import 'package:dram1y/src/home/pages/dream_page.dart';
 import 'package:dram1y/src/home/pages/home_page.dart';
 import 'package:dram1y/src/home/pages/money_page.dart';
 import 'package:dram1y/src/home/pages/notification_page.dart';
@@ -25,11 +26,10 @@ class PageContainer extends StatefulWidget {
 }
 
 class _PageContainerState extends State<PageContainer> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
   final List<Widget> _children = [
-    MoneyPage(),
     DepositPage(),
-    NotificationPage(),
+    HistoryPage(),
   ];
 
   bool isAnonymous = false;
@@ -93,10 +93,7 @@ class _PageContainerState extends State<PageContainer> {
         },
         currentIndex: _currentIndex,
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.attach_money),
-            title: Text('Money'),
-          ),
+         
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             title: Text('Home'),

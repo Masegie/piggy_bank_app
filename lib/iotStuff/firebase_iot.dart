@@ -1,3 +1,4 @@
+import 'package:dram1y/src/home/home_page_setup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +22,17 @@ class _IotActifityState extends State<IotActifity> {
         backgroundColor: Colors.amber,
       ),
       body: StreamBuilder(
-        
         stream: databaseIot.onValue,
         initialData: 0,
         builder: (context, snap) {
           DataSnapshot snapshot = snap.data.snapshot;
           int distance = snapshot.value;
-          return Text("$distance");
+          if(distance >=50){
+            return Text("$distance");
+          }
+          else {
+            return new HomePageSetup();
+          }
         },
       )
     );
