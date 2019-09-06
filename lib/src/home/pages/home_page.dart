@@ -1,11 +1,8 @@
-import 'package:dram1y/models/deposit.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/home/pages/money_page.dart';
-//import 'package:dram1y/src/home/pages/dream_page.dart';
-import 'package:dram1y/src/widgets/buttons/circle_money_button.dart';
+import 'package:dram1y/src/utils/asset_util.dart';
 import 'package:dram1y/src/widgets/dreamName_label.dart';
 import 'package:dram1y/src/widgets/dueDate_label.dart';
-import 'package:dram1y/src/widgets/money_entry_tile.dart';
 import 'package:dram1y/src/widgets/money_today_label.dart';
 import 'package:dram1y/src/widgets/popups/reset_data_when_finished.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +25,13 @@ class _DepositPageState extends State<DepositPage> {
 
   @override
   Widget build(BuildContext context) {
-    var databaseIot = FirebaseDatabase.instance.reference().child("distance");
+    var databaseIot = FirebaseDatabase.instance.reference().child('distance');
     final depositBloc = Provider.of<DepositBloc>(context);
     final userBloc = Provider.of<UserBloc>(context);
     return Scaffold(
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
               flex: 4,
@@ -51,10 +48,11 @@ class _DepositPageState extends State<DepositPage> {
                       if(maxAmount >= maxMoney){
                         return ResetDataWhenFinished();
                       }
-                      else return StreamBuilder<Event>(
+                      else return StreamBuilder(
                         stream: databaseIot.onValue,
                         builder: (context, snap) {
                           DataSnapshot snapshot = snap.data.snapshot;
+                          if(snapshot.value == null) return DepositPage();
                           int distance = snapshot.value;
                           if(distance >=50){
                             return Column(
@@ -63,7 +61,7 @@ class _DepositPageState extends State<DepositPage> {
                                 DueDateLabel(),
                                 DreamNameLabel(),                                                                   
                                 MoneyTodayLabel(),
-                                CircleButton(),
+                                Image.asset("assets/giphy.gif"),
                               ],
                             );
                           }
@@ -80,7 +78,7 @@ class _DepositPageState extends State<DepositPage> {
           ] 
         ),
       ),
-      
     );
   }
+  Widget get largeSpace => SizedBox(height: 400);
 }

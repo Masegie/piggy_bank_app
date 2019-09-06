@@ -1,11 +1,8 @@
-import 'package:dram1y/src/global_blocs/app_bloc.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/pages/onboarding_page.dart';
-import 'package:dram1y/src/widgets/popups/custom_dream_onboarding_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/widgets/custom_wide_flat_button.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class OnboardingTimePage extends StatefulWidget {
@@ -18,7 +15,6 @@ class _OnboardingTimePageState extends State<OnboardingTimePage> {
 
   @override
   Widget build(BuildContext context) {
-    final userBloc = Provider.of<AppBloc>(context).userBloc;
     final textTheme = Theme.of(context).textTheme;
     String formatDate = new DateFormat.yMMMd().format(selectedTime);
     return Scaffold(

@@ -1,4 +1,3 @@
-import 'package:dram1y/src/pages/onboarding_page_dream.dart';
 import 'package:dram1y/src/widgets/popups/custom_amount_onboarding_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';

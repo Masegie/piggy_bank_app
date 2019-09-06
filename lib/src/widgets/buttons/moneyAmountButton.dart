@@ -40,8 +40,6 @@ class MoneyAmountButton extends StatelessWidget {
                 },
               ),
           ),
-          SizedBox(height: 8),
-          if (amount != 0 ) Text('RP. $amount') else Text('Custom'),
         ],
       ),
     );
@@ -68,8 +66,8 @@ class CupImage extends StatelessWidget {
     Key key,
     @required this.amount,
     @required this.isSelected,
-    this.width = 50,
-    this.height = 50,
+    this.width = 60,
+    this.height = 60,
   }) : super(key: key);
 
   final int amount;
@@ -81,8 +79,8 @@ class CupImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       AssetUtil.assetImage(amount),
-      width: isSelected ? width + 10 : width,
-      height: isSelected ? height + 10 : height,
+      width: isSelected ? width + 40 : width,
+      height: isSelected ? height + 40 : height,
     );
   }
 }

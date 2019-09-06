@@ -1,13 +1,17 @@
-import 'package:dram1y/src/home/home_page_setup.dart';
-import 'package:dram1y/src/home/pages/dream_page.dart';
-import 'package:dram1y/src/home/pages/home_page.dart';
-import 'package:dram1y/src/widgets/buttons/custom_wide_flat_button.dart';
+import 'package:dram1y/src/global_blocs/app_bloc.dart';
 import 'package:dram1y/src/widgets/buttons/moneyAmountButton.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MoneyPage extends StatelessWidget {
+  final DatabaseReference iotDatabase = FirebaseDatabase.instance.reference().child("distance");
+
+  
   @override
   Widget build(BuildContext context) {
+    var databaseIot = FirebaseDatabase.instance.reference().child("distance");
+    final depositBloc = Provider.of<AppBloc>(context).depositBloc;
     return Dialog(
       child: Column(
         children: <Widget>[
@@ -31,12 +35,24 @@ class MoneyPage extends StatelessWidget {
             ),
           ),
           largeSpace,
-          CustomWideFlatButton(
-            onPressed: () => HistoryPage(),
-            backgroundColor: Theme.of(context).accentColor,
-            foregroundColor: Colors.blue.shade900,
-            text: "Ok",
-          ),
+          Expanded(
+            flex: 0,
+            child: StreamBuilder(
+              stream: databaseIot.onValue,
+              builder: (context, snap) {
+                if(snap.hasData){
+                  DataSnapshot snapshot = snap.data.snapshot;
+                  int distance = snapshot.value;
+                  if(distance <= 50){
+                    return FlatButton(
+                      child: Text("Ok"),
+                      onPressed:() => depositBloc.depositMoney(),
+                    );
+                  }
+                }
+              }
+            ),
+          )
         ],
       ),
     );

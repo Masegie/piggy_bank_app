@@ -3,8 +3,6 @@ import 'package:dram1y/src/enums/enums.dart';
 import 'package:dram1y/src/global_blocs/auth/auth_bloc.dart';
 import 'package:dram1y/src/home/pages/dream_page.dart';
 import 'package:dram1y/src/home/pages/home_page.dart';
-import 'package:dram1y/src/home/pages/money_page.dart';
-import 'package:dram1y/src/home/pages/notification_page.dart';
 import 'package:dram1y/src/home/pages/profile_page.dart';
 import 'package:dram1y/src/pages/onboarding_page_dream.dart';
 import 'package:dram1y/src/widgets/popups/sync_account_popup.dart';

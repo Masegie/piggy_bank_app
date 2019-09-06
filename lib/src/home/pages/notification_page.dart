@@ -62,14 +62,6 @@ class _NotificationPageState extends State<NotificationPage> with SingleTickerPr
                     builder: (context, child) {
                       return Opacity(
                         opacity: _fadeInController.value,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.all(12),
-                          itemCount: notifications.length,
-                          itemBuilder: (context, index) {
-                            final notification = notifications[index];
-                           
-                          },
-                        ),
                       );
                     },
                   ),

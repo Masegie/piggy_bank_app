@@ -2,12 +2,16 @@ import 'dart:async';
 import 'package:dram1y/models/deposit.dart';
 import 'package:dram1y/service/firestore/firestore_deposit_service.dart';
 import 'package:dram1y/src/global_blocs/bloc_base.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:rxdart/rxdart.dart';
 
 class DepositBloc implements BlocBase{
   StreamSubscription _depositStreamSubscription;
   List<Deposit> _depositsToday = List();
   int _selectedDepositAmount = 400;
+  final DatabaseReference iotDatabase = FirebaseDatabase.instance.reference().child("distance");
+  var databaseIot = FirebaseDatabase.instance.reference().child("distance");
+   
 
   final _depositController = BehaviorSubject<List<Deposit>>();
   Function(List<Deposit>) get _inDeposits => _depositController.sink.add;
@@ -34,6 +38,7 @@ class DepositBloc implements BlocBase{
   Future<void> depositMoney() async {
     final deposit = Deposit(DateTime.now(), _selectedDepositAmount);
     FirestoreDepositService.depositMoney(deposit);
+    iotDatabase.set(100);
   }
 
   Future<void> removeDeposit(Deposit deposit) async {

@@ -1,9 +1,5 @@
-import 'package:dram1y/service/firestore/firestore_deposit_service.dart';
-import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
-import 'package:dram1y/src/pages/onboarding_page_dream.dart';
-import 'package:dram1y/src/widgets/popups/reset_data_when_finished.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
