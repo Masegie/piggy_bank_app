@@ -53,7 +53,11 @@ class _DreamNameLabelState extends State<DreamNameLabel> with SingleTickerProvid
                       opacity: _fadeInController.value,
                       child: Text(
                         '$dreamName',
-                        style: Theme.of(context).textTheme.title,
+                        style: new TextStyle(
+                          fontSize: 35.0,
+                          color: Colors.grey.shade600,
+                          fontFamily: 'Raleway'
+                        ),
                       ),
                     );
                   },

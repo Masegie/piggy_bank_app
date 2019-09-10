@@ -46,21 +46,26 @@ class _MoneyTodayLabelState extends State<MoneyTodayLabel> with SingleTickerProv
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final moneyAmount  = snapshot.data;
+                
                 _fadeInController.forward();
                 return AnimatedBuilder(
                   animation: _fadeInController,
                   builder: (context,child) {
-                    return Opacity(
-                      opacity: _fadeInController.value,
-                      child: Text(
-                        'Rp. $moneyAmount/Rp.$maxMoney',
-                        style: Theme.of(context).textTheme.title,
-                      ),
+                    return Column(
+                      children: <Widget>[
+                        Text(
+                          'Rp $moneyAmount',
+                          style: new TextStyle(
+                            fontSize: 25.0,
+                            color: Colors.white,
+                            fontFamily: 'Raleway'
+                          ),
+                        ),
+                      ],
                     );
                   },
                 );
               }
-              return SizedBox(height: 24);
             },
           );
         }

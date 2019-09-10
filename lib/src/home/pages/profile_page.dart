@@ -1,4 +1,3 @@
-import 'package:dram1y/iotStuff/firebase_iot.dart';
 import 'package:dram1y/src/root_page.dart';
 import 'package:flutter/material.dart';
 
@@ -24,16 +23,8 @@ class ProfilePage extends StatelessWidget {
           } 
         ),
       ),
-      body: FlatButton(
-        child: Text('daf'),
-        color: Colors.amber,
-        onPressed: () async {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => IotActifity(),
-              )
-            );
-          } 
+      body: Center(
+        child: Text("Belum ada isinya"),
       ),
     );
   }

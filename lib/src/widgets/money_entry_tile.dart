@@ -16,7 +16,7 @@ class MoneyEntryTile extends StatelessWidget {
     final depositBloc = Provider.of<DepositBloc>(context);
     return Dismissible(
       background: Container(
-        color: Colors.redAccent,
+        color: Colors.red.shade300,
       ),
       key: UniqueKey(),
       onDismissed: (direction) => depositBloc.removeDeposit(deposit),
@@ -29,8 +29,20 @@ class MoneyEntryTile extends StatelessWidget {
           )
         ),
         child: ListTile(
-          title: Text(deposit.amount.toString()),
-          subtitle: Text(deposit.date.toString().substring(0,10)),
+          title: Text(deposit.amount.toString(),
+            style: new TextStyle(
+              fontSize: 26.0,
+              color: Colors.grey,
+              fontFamily: 'Raleway'
+            ),
+          ),
+          subtitle: Text(deposit.date.toString().substring(0,10),
+            style: new TextStyle(
+              fontSize: 16.0,
+              color: Colors.grey,
+              fontFamily: 'Raleway'
+            ),
+          ),
         ),
       ),
     );

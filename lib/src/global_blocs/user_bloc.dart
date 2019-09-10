@@ -11,6 +11,7 @@ class UserBloc implements BlocBase{
   StreamSubscription _userStreamSubscription;
   String _selectedDreamName = "duno";
   DateTime _selectedDueDate = DateTime.now();
+  String _selectedYourName = "duno";
 
   final _userController = BehaviorSubject<User>();
   Function(User) get _inUser => _userController.sink.add;
@@ -20,6 +21,10 @@ class UserBloc implements BlocBase{
   Function(String) get _inSelectedName => _selectedDreamNameController.sink.add;
   Stream<String> get outSelectedName => _selectedDreamNameController.stream;
 
+  final _selectedYourNameController = BehaviorSubject<String>();
+  Function(String) get _inSelectedYourName => _selectedYourNameController.sink.add;
+  Stream<String> get outSelectedYourName => _selectedYourNameController.stream;
+
   final _selectedDueDateController = BehaviorSubject<DateTime>();
   Function(DateTime) get _inSelectedDueDate => _selectedDueDateController.sink.add;
   Stream<DateTime> get outSelectedDueDate => _selectedDueDateController.stream;
@@ -27,6 +32,8 @@ class UserBloc implements BlocBase{
   Stream<int> get outMaxMoney => outUser.map((user) => user.maxMoneyPerDay);
 
   Stream<String> get outDreamName =>outUser.map((user) => user.dreamName);
+
+  Stream<String> get outYourName =>outUser.map((user) => user.yourName);
 
   Stream<DateTime> get outDueDate =>outUser.map((user) => user.dueDate);
 
@@ -48,6 +55,11 @@ class UserBloc implements BlocBase{
     _inSelectedName(_selectedDreamName);
   }
 
+  setYourName(String name) {
+    _selectedYourName = name;
+    _inSelectedName(_selectedYourName);
+  }
+
   setDueDate(DateTime dueDate) {
     _selectedDueDate = dueDate;
     _inSelectedDueDate(_selectedDueDate);
@@ -57,6 +69,7 @@ class UserBloc implements BlocBase{
   void dispose(){
     _userController.close();
     _selectedDreamNameController.close();
+    _selectedYourNameController.close();
     _selectedDueDateController.close();
     _userStreamSubscription.cancel();
   }

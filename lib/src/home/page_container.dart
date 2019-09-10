@@ -4,8 +4,9 @@ import 'package:dram1y/src/global_blocs/auth/auth_bloc.dart';
 import 'package:dram1y/src/home/pages/dream_page.dart';
 import 'package:dram1y/src/home/pages/home_page.dart';
 import 'package:dram1y/src/home/pages/profile_page.dart';
-import 'package:dram1y/src/pages/onboarding_page_dream.dart';
+import 'package:dram1y/src/pages/onboarding_page_name.dart';
 import 'package:dram1y/src/widgets/popups/sync_account_popup.dart';
+import 'package:dram1y/src/widgets/your_name_label.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +46,7 @@ class _PageContainerState extends State<PageContainer> {
         //replace screen with onboarding page
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => OnboardingDreamPage(),
+            builder: (context) => OnboardingNamePage(),
           ),
         );
       }
@@ -57,11 +58,13 @@ class _PageContainerState extends State<PageContainer> {
     final authBloc = Provider.of<AuthBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.green.shade300,
+        title: YourNameLabel(),
         elevation: 0,
         actions: <Widget>[
           //popup menu
+          
           PopupMenuButton(
             onSelected: (value) => onMenuSelection(value,authBloc),
             itemBuilder: (context){
@@ -85,23 +88,26 @@ class _PageContainerState extends State<PageContainer> {
         ],
       ),
       body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {
-          setState(() => _currentIndex = index);
-        },
-        currentIndex: _currentIndex,
-        items: [
+      // bottomNavigationBar: BottomNavigationBar(
+      //   selectedItemColor: Colors.white,
+      //   backgroundColor: Colors.green.shade300,
+      //   onTap: (index) {
+      //     setState(() => _currentIndex = index);
+      //   },
+      //   currentIndex: _currentIndex,
+      //   items: [
          
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_system_daydream),
-            title: Text('Dreams'),
-          ),
-        ],
-      ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       title: Text('Home'),
+      //       backgroundColor: Colors.white
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.history),
+      //       title: Text('History'),
+      //     ),
+      //   ],
+      // ),
     );
   }
 
