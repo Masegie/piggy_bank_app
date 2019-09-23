@@ -66,8 +66,8 @@ class CupImage extends StatelessWidget {
     Key key,
     @required this.amount,
     @required this.isSelected,
-    this.width = 60,
-    this.height = 60,
+    this.width = 90,
+    this.height = 90,
   }) : super(key: key);
 
   final int amount;
@@ -79,8 +79,8 @@ class CupImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       AssetUtil.assetImage(amount),
-      width: isSelected ? width + 40 : width,
-      height: isSelected ? height + 40 : height,
+      width: isSelected ? width + 80 : width,
+      height: isSelected ? height + 80 : height,
     );
   }
 }

@@ -16,13 +16,6 @@ class CustomWideFlatButton extends StatelessWidget {
   final Color foregroundColor;
   final bool isRoundedAtBottom;
 
-  final roundedBorder = const RoundedRectangleBorder(
-    borderRadius: BorderRadius.only(
-      bottomLeft: Radius.circular(5),
-      bottomRight: Radius.circular(5),
-    ),
-  );
-
   @override
   Widget build(BuildContext context) {
     return FlatButton(

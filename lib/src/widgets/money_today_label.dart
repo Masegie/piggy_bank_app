@@ -40,7 +40,6 @@ class _MoneyTodayLabelState extends State<MoneyTodayLabel> with SingleTickerProv
         stream: userBloc.outMaxMoney,
         initialData: 0,
         builder: (context, snapshot) {
-          final maxMoney = snapshot.data;
           return StreamBuilder<int>(
             stream: depositBloc.outDepositsAmount,
             builder: (context, snapshot) {

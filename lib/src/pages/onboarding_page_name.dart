@@ -1,5 +1,6 @@
+import 'package:dram1y/service/firestore/firestore_deposit_service.dart';
+import 'package:dram1y/src/login/login_page.dart';
 import 'package:dram1y/src/pages/onboarding_page_dream.dart';
-import 'package:dram1y/src/pages/onboarding_page_time.dart';
 import 'package:dram1y/src/widgets/popups/custom_name_onboarding_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
@@ -63,6 +64,16 @@ class _OnboardingNamePageState extends State<OnboardingNamePage> {
                         )
                       );
                     },
+                  ),
+                  FlatButton(
+                      child: Text("asd"),
+                      onPressed: () async {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        )
+                      );
+                    }
                   )
                 ],
               ),

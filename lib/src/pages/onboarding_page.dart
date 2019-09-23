@@ -1,20 +1,27 @@
+import 'package:dram1y/models/deposit.dart';
+import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
+import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/widgets/popups/custom_amount_onboarding_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/root_page.dart';
 import 'package:dram1y/src/widgets/custom_wide_flat_button.dart';
+import 'package:provider/provider.dart';
 
 class OnboardingPage extends StatefulWidget {
   @override
   _OnboardingPageState createState() => _OnboardingPageState();
 }
-
+ int a = 1;
 class _OnboardingPageState extends State<OnboardingPage> {
   int selectedAmount = 2500;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final depositBloc = Provider.of<DepositBloc>(context);
+    final userBloc = Provider.of<UserBloc>(context);
+    
     return Scaffold(
       body: Center(
         child: Column(
@@ -60,7 +67,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         )
                       );
                     },
-                  )
+                  ),
                 ],
               ),
             ),

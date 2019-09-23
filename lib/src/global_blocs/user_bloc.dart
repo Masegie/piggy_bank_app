@@ -12,6 +12,7 @@ class UserBloc implements BlocBase{
   String _selectedDreamName = "duno";
   DateTime _selectedDueDate = DateTime.now();
   String _selectedYourName = "duno";
+  int _selectedTotal = 100;
 
   final _userController = BehaviorSubject<User>();
   Function(User) get _inUser => _userController.sink.add;
@@ -29,13 +30,17 @@ class UserBloc implements BlocBase{
   Function(DateTime) get _inSelectedDueDate => _selectedDueDateController.sink.add;
   Stream<DateTime> get outSelectedDueDate => _selectedDueDateController.stream;
 
+  Stream<int> get outTotal => outUser.map((user) => user.total);
+
+  Stream<int> get outMola => outUser.map((user) => user.mola);
+
   Stream<int> get outMaxMoney => outUser.map((user) => user.maxMoneyPerDay);
 
-  Stream<String> get outDreamName =>outUser.map((user) => user.dreamName);
+  Stream<String> get outDreamName => outUser.map((user) => user.dreamName);
 
-  Stream<String> get outYourName =>outUser.map((user) => user.yourName);
+  Stream<String> get outYourName => outUser.map((user) => user.yourName);
 
-  Stream<DateTime> get outDueDate =>outUser.map((user) => user.dueDate);
+  Stream<DateTime> get outDueDate => outUser.map((user) => user.dueDate);
 
   Future<void> init() async {
     await FirestoreUserService.checkAndCreateUser();
@@ -57,7 +62,7 @@ class UserBloc implements BlocBase{
 
   setYourName(String name) {
     _selectedYourName = name;
-    _inSelectedName(_selectedYourName);
+    _inSelectedYourName(_selectedYourName);
   }
 
   setDueDate(DateTime dueDate) {

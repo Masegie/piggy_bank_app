@@ -51,4 +51,25 @@ class FirestoreDepositService {
       throw e;
     }
   }
+
+ static void removeDepositAll() async {
+    Firestore.instance
+      .collection('deposit').getDocuments().then((snapshot){
+        for (DocumentSnapshot ds in snapshot.documents){
+          ds.reference.delete();
+        }
+      });
+  }
+   static void removeCollection() async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser();
+    Firestore.instance
+      .collection(FirestoreConstants.userCollection)
+      .document(firebaseUser.uid)
+      .collection('deposit').getDocuments()
+      .then((snapshot) {
+        return snapshot.documents.map((doc){
+          doc.reference.delete();
+        });
+      });
+  }
 }

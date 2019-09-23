@@ -45,8 +45,6 @@ class _YourNameLabelState extends State<YourNameLabel> with SingleTickerProvider
             stream: depositBloc.outDepositsAmount,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final moneyAmount  = snapshot.data;
-                
                 _fadeInController.forward();
                 return AnimatedBuilder(
                   animation: _fadeInController,

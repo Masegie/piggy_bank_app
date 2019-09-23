@@ -1,7 +1,8 @@
 import 'package:dram1y/models/user.dart';
 import 'package:dram1y/src/enums/enums.dart';
 import 'package:dram1y/src/global_blocs/auth/auth_bloc.dart';
-import 'package:dram1y/src/home/pages/dream_page.dart';
+import 'package:dram1y/src/home/pages/fixHistory_page.dart';
+import 'package:dram1y/src/home/pages/history_page.dart';
 import 'package:dram1y/src/home/pages/home_page.dart';
 import 'package:dram1y/src/home/pages/profile_page.dart';
 import 'package:dram1y/src/pages/onboarding_page_name.dart';
@@ -64,7 +65,6 @@ class _PageContainerState extends State<PageContainer> {
         elevation: 0,
         actions: <Widget>[
           //popup menu
-          
           PopupMenuButton(
             onSelected: (value) => onMenuSelection(value,authBloc),
             itemBuilder: (context){
@@ -77,6 +77,10 @@ class _PageContainerState extends State<PageContainer> {
                 const PopupMenuItem<PopupMenuChoices>(
                   value: PopupMenuChoices.syncPopup,
                   child: Text('sync account'),
+                ),
+                const PopupMenuItem<PopupMenuChoices>(
+                  value: PopupMenuChoices.history,
+                  child: Text('history'),
                 ),
                 const PopupMenuItem<PopupMenuChoices>(
                   value: PopupMenuChoices.signOut,
@@ -135,6 +139,13 @@ class _PageContainerState extends State<PageContainer> {
         setState(() {
           isAnonymous = firebaseUser.isAnonymous;
         });
+        break;
+      case PopupMenuChoices.history:
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => FixHistoryPage(),
+          )
+        );
         break;
       default:
     }

@@ -1,3 +1,4 @@
+import 'package:dram1y/src/login/login_page.dart';
 import 'package:dram1y/src/pages/onboarding_page_time.dart';
 import 'package:dram1y/src/widgets/popups/custom_dream_onboarding_popup.dart';
 import 'package:flutter/material.dart';
@@ -56,12 +57,22 @@ class _OnboardingDreamPageState extends State<OnboardingDreamPage> {
                     isRoundedAtBottom: false,
                     onPressed: () async {
                       await FirestoreUserService.updateDreamName(selectedName);
+                      await FirestoreUserService.updateMola(1);
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => OnboardingTimePage(),
                         )
                       );
                     },
+                  ), FlatButton(
+                      child: Text("asd"),
+                      onPressed: () async {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                        )
+                      );
+                    }
                   )
                 ],
               ),

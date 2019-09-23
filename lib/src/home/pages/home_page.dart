@@ -1,3 +1,4 @@
+import 'package:dram1y/models/deposit.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/home/pages/money_page.dart';
 import 'package:dram1y/src/widgets/dreamName_label.dart';
@@ -35,7 +36,7 @@ class _DepositPageState extends State<DepositPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              flex: 4,
+              flex: 1,
               child: StreamBuilder<int>(
                 stream: userBloc.outMaxMoney,
                 initialData: 0,
@@ -50,12 +51,13 @@ class _DepositPageState extends State<DepositPage> {
                         return ResetDataWhenFinished();
                       }
                       else return StreamBuilder(
+
                         stream: databaseIot.onValue,
                         builder: (context, snap) {
                           DataSnapshot snapshot = snap.data.snapshot;
                           if(snapshot.value == null) return DepositPage();
                           int distance = snapshot.value;
-                          if(distance >=50){
+                          if(distance >=10){
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[

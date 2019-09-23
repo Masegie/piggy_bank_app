@@ -1,1 +1,1 @@
-enum PopupMenuChoices {profile,syncPopup,signOut}
+enum PopupMenuChoices {profile,syncPopup,history,signOut}

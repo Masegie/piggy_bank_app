@@ -1,5 +1,7 @@
 import 'package:dram1y/src/global_blocs/app_bloc.dart';
+import 'package:dram1y/src/home/home_page_setup.dart';
 import 'package:dram1y/src/widgets/buttons/moneyAmountButton.dart';
+import 'package:dram1y/src/widgets/custom_wide_flat_button.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,9 @@ class MoneyPage extends StatelessWidget {
     var databaseIot = FirebaseDatabase.instance.reference().child("distance");
     final depositBloc = Provider.of<AppBloc>(context).depositBloc;
     return Dialog(
+      shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(20)
+      ),
       child: Column(
         children: <Widget>[
           Expanded(
@@ -42,10 +47,14 @@ class MoneyPage extends StatelessWidget {
               builder: (context, snap) {
                 if(snap.hasData){
                   DataSnapshot snapshot = snap.data.snapshot;
+                  if(snapshot == null){
+                    HomePageSetup();
+                  }
                   int distance = snapshot.value;
-                  if(distance <= 50){
+                  if(distance <= 9){
                     return FlatButton(
-                      child: Text("Ok"),
+                      child: Text('Oke'),
+                      color: Colors.green.shade300,
                       onPressed:() => depositBloc.depositMoney(),
                     );
                   }

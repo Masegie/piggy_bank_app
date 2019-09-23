@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dram1y/models/deposit.dart';
 import 'package:dram1y/service/firestore/firestore_deposit_service.dart';
+import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/global_blocs/bloc_base.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,7 +22,11 @@ class DepositBloc implements BlocBase{
   Function(int) get _inSelectedAmount => _selectedDepositAmountController.sink.add;
   Stream<int> get outSelectedAmount => _selectedDepositAmountController.stream;
 
-   Stream<int> get outDepositsAmount {
+  Stream<int> get outDepositsAmount {
+    return outDeposits.map((deposits) => deposits.fold<int>(0, (totalAmount, deposit) => totalAmount + deposit.amount));
+  }
+
+  Stream<int> get outDepositsAmountTemp {
     return outDeposits.map((deposits) => deposits.fold<int>(0, (totalAmount, deposit) => totalAmount + deposit.amount));
   }
 
@@ -38,11 +43,21 @@ class DepositBloc implements BlocBase{
   Future<void> depositMoney() async {
     final deposit = Deposit(DateTime.now(), _selectedDepositAmount);
     FirestoreDepositService.depositMoney(deposit);
+    FirestoreUserService.updateTotal(_selectedDepositAmount,deposit.amount);
     iotDatabase.set(100);
+  }
+
+  Future<void> resetDepositMoney() async {
+    final deposit = Deposit(DateTime.now(), (_selectedDepositAmount*0));
+    FirestoreDepositService.depositMoney(deposit);
   }
 
   Future<void> removeDeposit(Deposit deposit) async {
     FirestoreDepositService.removeDeposit(deposit);
+  }
+
+   Future<void> removeCollection() async {
+    FirestoreDepositService.removeCollection();
   }
 
   set setDepositAmount(int amount) {
