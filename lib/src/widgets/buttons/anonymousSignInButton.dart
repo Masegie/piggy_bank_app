@@ -13,10 +13,12 @@ class AnonymousSignInButton extends StatelessWidget {
     return ButtonTheme(
       minWidth: 224,
       height: 48,           
-      child: RaisedButton(
+      child: FlatButton.icon(
         onPressed: authBloc.signInAnonymously,
-        color: Colors.blue.shade200,
-        child: Text('Anonymous Sign in'),
+        color: Colors.greenAccent[100],
+        icon: Icon(Icons.person),
+        label: Text('Anonymous Sign in'),
+        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
       ),
     );
   }

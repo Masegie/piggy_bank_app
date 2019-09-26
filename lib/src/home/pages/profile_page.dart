@@ -3,6 +3,8 @@ import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/root_page.dart';
+import 'package:dram1y/src/widgets/popups/reward_dream_target_popup.dart';
+import 'package:dram1y/src/widgets/popups/reward_total_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 int total = 0;
@@ -148,6 +150,45 @@ class ProfilePage extends StatelessWidget {
                                   fontSize: 30,
                                   color: Colors.white,
                                   fontFamily: 'Raleway'
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              SizedBox(width: 5,),
+                              Container(
+                                width: 150,
+                                height: 150,
+                                color: Colors.transparent,
+                                child: FlatButton(
+                                  child: Image.asset('assets/bintang.png',scale: 1,),
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (context){
+                                        return RewardDreamTargetPopup();
+                                      }
+                                    );
+                                  },
+                                ),
+                              ),
+                              Container(
+                                width: 150,
+                                height: 150,
+                                color: Colors.transparent,
+                                child: FlatButton(
+                                  child: Image.asset('assets/rp.png',scale: 3,),
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (context){
+                                        return RewardTotalTargetPopup();
+                                      }
+                                    );
+                                  },
                                 ),
                               ),
                             ],

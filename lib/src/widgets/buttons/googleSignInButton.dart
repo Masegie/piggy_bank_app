@@ -11,10 +11,14 @@ class GoogleSignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ButtonTheme(
-      minWidth: 224,      
-      child: FlatButton(
+      minWidth: 224,
+      height: 50,      
+      child: FlatButton.icon(
         onPressed: onPressed,
-        child: Text('Google Sign in'),
+        color: Colors.white,
+        icon: Image.asset('assets/google_icon.png',scale: 30,),
+        label: Text('Login With Google'),
+        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
       ),
     );
   }

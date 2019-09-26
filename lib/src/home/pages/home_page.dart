@@ -55,7 +55,7 @@ class _DepositPageState extends State<DepositPage> {
                         stream: databaseIot.onValue,
                         builder: (context, snap) {
                           DataSnapshot snapshot = snap.data.snapshot;
-                          if(snapshot.value == null) return DepositPage();
+                          if(!snap.hasData) return DepositPage();
                           int distance = snapshot.value;
                           if(distance >=10){
                             return Column(
