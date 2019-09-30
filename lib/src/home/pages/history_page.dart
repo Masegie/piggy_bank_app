@@ -19,7 +19,7 @@ class HistoryPage extends StatelessWidget {
         title: const Text(''),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Colors.white,
+          color: Colors.green.shade300,
           onPressed: () async {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
@@ -32,6 +32,25 @@ class HistoryPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
+            SizedBox(height: 50,),
+            Image.asset('assets/selamat.png',scale: 1.4,),
+             SizedBox(height: 50,),
+             FlatButton(
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                padding: const EdgeInsets.all(12),
+                onPressed: () async {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => OnboardingDreamPage(),
+                    )
+                  );
+                }, 
+                child: Text('Buat Lagi !',
+                style: new TextStyle(
+                    fontFamily: 'Raleway',fontSize: 30,fontWeight: FontWeight.bold,color: Colors.white
+                  ),),
+                color: Colors.green.shade200,
+              ),
             // Text('Selamat Telah Menyelesaikan Mimpi mu Ayo  buat mimpi lagi!',
             //   style: TextStyle(fontFamily: 'Raleway',fontSize: 17),
             // ),

@@ -1,6 +1,6 @@
-import 'package:dram1y/models/deposit.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
+import 'package:dram1y/src/pages/onboarding_page_time.dart';
 import 'package:dram1y/src/widgets/popups/custom_amount_onboarding_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
@@ -29,8 +29,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
           children: <Widget>[
             SizedBox(height: 100, width: double.infinity),
             smallTextSpace,
-            title(textTheme),
+            Image.asset('assets/price_mochi.png',scale: 2,),
             bigTextSpace,
+            title(textTheme),
+            smallTextSpace,
             subTitle(textTheme),
             smallTextSpace,
             Expanded(
@@ -53,12 +55,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       'Rp. $selectedAmount',
                       style: TextStyle(fontFamily: 'Raleway',fontSize: 17),
                     ),
-                  ),bigTextSpace,
+                  ),smallTextSpace,
                   CustomWideFlatButton(
-                    backgroundColor: Colors.green.shade300,
+                    backgroundColor: Colors.green[200],
                     foregroundColor: Colors.white,
                     isRoundedAtBottom: false,
-                    text: "Let's Start !",
+                    text: "Ayo Mulai !",
                     onPressed: () async {
                       await FirestoreUserService.updateTotalMoney(selectedAmount);
                       Navigator.of(context).pushReplacement(
@@ -68,6 +70,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       );
                     },
                   ),
+                  FlatButton(
+                      child: Text("kembali"),
+                      onPressed: () async {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => OnboardingTimePage(),
+                        )
+                      );
+                    }
+                  )
                 ],
               ),
             ),
@@ -81,24 +93,24 @@ class _OnboardingPageState extends State<OnboardingPage> {
   
   Text title(TextTheme textTheme) {
     return Text(
-      "Let's start reaching your dreams!",
+      "Berapa Harganya ?",
       style: textTheme.title.copyWith(
         fontFamily: 'Raleway',
         fontSize: 25,
         fontWeight: FontWeight.bold,
-        color: Colors.green
+        color: Colors.grey.shade600
       ),
     );
   }
 
   Text subTitle(TextTheme textTheme) {
     return Text(
-      'Set your dream goal!',
+      'Klik box dibawah untuk memasukan harganya',
       style: textTheme.subtitle.copyWith(
         fontFamily: 'Raleway',
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: FontWeight.bold,
-        color: Colors.green
+        color: Colors.grey.shade400
       ),
     );
   }

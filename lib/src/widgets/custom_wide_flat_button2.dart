@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CustomWideFlatButton extends StatelessWidget {
-  const CustomWideFlatButton({
+class CustomWideFlatButton2 extends StatelessWidget {
+  const CustomWideFlatButton2({
     Key key,
-    this.text = 'Lanjut',
+    this.text = 'Next',
     @required this.onPressed,
     @required this.backgroundColor,
     @required this.foregroundColor,
@@ -19,14 +19,21 @@ class CustomWideFlatButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      padding: EdgeInsets.symmetric(horizontal: 90,vertical: 18),
+      
+      padding: EdgeInsets.all(0),
       onPressed: onPressed,
-      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(5),
+          bottomRight: Radius.circular(5),
+        ),
+      ),
       color: backgroundColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-        Text(
+      child: Container(
+        alignment: Alignment.center,
+        height: 81,
+        width: double.infinity,
+        child: Text(
           text,
           style: TextStyle(
             color: foregroundColor,
@@ -35,8 +42,7 @@ class CustomWideFlatButton extends StatelessWidget {
             fontFamily: 'Raleway',
           ),
         ),
-        ]
-      ),
+      )
     );
   }
 }

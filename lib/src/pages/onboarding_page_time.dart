@@ -1,5 +1,6 @@
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/pages/onboarding_page.dart';
+import 'package:dram1y/src/pages/onboarding_page_dream.dart';
 import 'package:flutter/material.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/widgets/custom_wide_flat_button.dart';
@@ -23,9 +24,10 @@ class _OnboardingTimePageState extends State<OnboardingTimePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: 100, width: double.infinity),
-            smallTextSpace,
-            title(textTheme),
+            Image.asset('assets/dueDate_mochi.png',scale: 2,),
             bigTextSpace,
+            title(textTheme),
+            smallTextSpace,
             subTitle(textTheme),
             smallTextSpace,
             Expanded(
@@ -39,12 +41,11 @@ class _OnboardingTimePageState extends State<OnboardingTimePage> {
                       '$formatDate',
                       style: TextStyle(fontFamily: 'Raleway',fontSize: 17),
                     ),
-                  ),bigTextSpace,
+                  ),smallTextSpace,
                   CustomWideFlatButton(
-                    backgroundColor: Colors.green.shade300,
+                    backgroundColor: Colors.green[200],
                     foregroundColor: Colors.white,
                     isRoundedAtBottom: false,
-                    text: 'Next',
                     onPressed: () async {
                       await FirestoreUserService.updateDueDate(selectedTime);
                       Navigator.of(context).pushReplacement(
@@ -53,6 +54,16 @@ class _OnboardingTimePageState extends State<OnboardingTimePage> {
                         )
                       );
                     },
+                  ),
+                   FlatButton(
+                      child: Text("kembali"),
+                      onPressed: () async {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => OnboardingDreamPage(),
+                        )
+                      );
+                    }
                   )
                 ],
               ),
@@ -67,24 +78,24 @@ class _OnboardingTimePageState extends State<OnboardingTimePage> {
   
   Text title(TextTheme textTheme) {
     return Text(
-      "Let's start reaching your dreams!",
+      "Mau Sampai Kapan ?",
       style: textTheme.title.copyWith(
         fontFamily: 'Raleway',
         fontSize: 25,
         fontWeight: FontWeight.bold,
-        color: Colors.green
+        color: Colors.grey.shade600
       ),
     );
   }
 
   Text subTitle(TextTheme textTheme) {
     return Text(
-      'Set your due date!',
+      'Klik box dibawah untuk memasukan tanggalnya',
       style: textTheme.subtitle.copyWith(
         fontFamily: 'Raleway',
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: Colors.green
+        color: Colors.grey.shade400
       ),
     );
   }

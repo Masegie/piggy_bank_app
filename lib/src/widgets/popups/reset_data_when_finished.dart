@@ -23,24 +23,24 @@ class _ResetDataWhenFinishedState extends State<ResetDataWhenFinished> {
             padding: const EdgeInsets.only(top: 18, left: 12, right: 12),
             child: Column(
               children: <Widget>[
-                Text(
-                  'Selamat!',
-                  style: Theme.of(context).textTheme.title.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                ),
                 smallSpace,
                 Text(
-                  'Mimpimu Tercapai',
+                  'Mimpimu Telat Tercapai!',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.subtitle.copyWith(),
+                  style: new TextStyle(
+                    fontFamily: 'Raleway',fontSize: 25,fontWeight: FontWeight.bold,
+                  ),
                 ),
-                smallSpace,
+                smallSpace,smallSpace,smallSpace,
+                Image.asset('assets/selamat.png',scale: 2,),
+                largeSpace,
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
-                    child: Text('Apakah kamu mau membuat mimpi lagi ?'),
+                    child: Text('Apakah kamu mau membuat mimpi lagi ?',
+                    style: new TextStyle(
+                    fontFamily: 'Raleway',fontSize: 16,
+                  ),),
                   ),
                 ),
               ],
@@ -50,6 +50,7 @@ class _ResetDataWhenFinishedState extends State<ResetDataWhenFinished> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               FlatButton(
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 onPressed: () async {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -57,11 +58,15 @@ class _ResetDataWhenFinishedState extends State<ResetDataWhenFinished> {
                     )
                   );
                 }, 
-                child: Text('Buat Lagi !'),
+                child: Text('Buat Lagi !',
+                style: new TextStyle(
+                    fontFamily: 'Raleway',fontWeight: FontWeight.bold,color: Colors.white
+                  ),),
                 color: Colors.green.shade200,
               ),
               SizedBox(width: 30,),
               FlatButton(
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 onPressed: () async {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -69,12 +74,14 @@ class _ResetDataWhenFinishedState extends State<ResetDataWhenFinished> {
                     )
                   );
                 }, 
-                child: Text('Tidak'),
+                child: Text('Tidak',style: new TextStyle(
+                    fontFamily: 'Raleway',fontWeight: FontWeight.bold,color: Colors.white
+                  ),),
                 color: Colors.red.shade200,
               ),
             ],
           ),
-          smallSpace,
+          largeSpace,
         ],
       ),
     );

@@ -1,5 +1,3 @@
-import 'package:dram1y/models/deposit.dart';
-import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/root_page.dart';
