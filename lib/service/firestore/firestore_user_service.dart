@@ -105,6 +105,19 @@ class FirestoreUserService {
       }
   }
 
+  // static Future<void> updateLastDeposit() async{
+  //   final firebaseUser = await FirebaseAuth.instance.currentUser();
+  //   Map<String, dynamic> update = Map();
+  //   update.putIfAbsent(User.lastDepositField,() => DateTime.now());
+
+  //   try {
+  //       Firestore.instance.collection(FirestoreConstants.userCollection).document(firebaseUser.uid).updateData(update);
+  //     } catch (e) {
+  //       print(e);
+  //       throw e;
+  //     }
+  // }
+
   static Future<void> updateDueDate(DateTime date) async{
     final firebaseUser = await FirebaseAuth.instance.currentUser();
     Map<String, dynamic> update = Map();

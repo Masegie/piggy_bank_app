@@ -30,6 +30,10 @@ class UserBloc implements BlocBase{
   Function(DateTime) get _inSelectedDueDate => _selectedDueDateController.sink.add;
   Stream<DateTime> get outSelectedDueDate => _selectedDueDateController.stream;
 
+  final _selectedLastDepositController = BehaviorSubject<DateTime>();
+  Function(DateTime) get _inSelectedlastDeposit => _selectedLastDepositController.sink.add;
+  Stream<DateTime> get outSelectedLastDeposit => _selectedLastDepositController.stream;
+
   Stream<int> get outTotal => outUser.map((user) => user.total);
 
   Stream<int> get outMola => outUser.map((user) => user.mola);
@@ -41,6 +45,8 @@ class UserBloc implements BlocBase{
   Stream<String> get outYourName => outUser.map((user) => user.yourName);
 
   Stream<DateTime> get outDueDate => outUser.map((user) => user.dueDate);
+
+  //Stream<DateTime> get outlastDeposit => outUser.map((user) => user.lastDeposit);
 
   Future<void> init() async {
     await FirestoreUserService.checkAndCreateUser();
@@ -77,5 +83,6 @@ class UserBloc implements BlocBase{
     _selectedYourNameController.close();
     _selectedDueDateController.close();
     _userStreamSubscription.cancel();
+    _selectedLastDepositController.close();
   }
 }

@@ -2,7 +2,6 @@ import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 import 'package:dram1y/src/home/home_page_setup.dart';
 import 'package:dram1y/src/home/pages/history_page.dart';
-import 'package:dram1y/src/pages/onboarding_page_dream.dart';
 import 'package:flutter/material.dart';
 class ResetDataWhenFinished extends StatefulWidget {
   @override

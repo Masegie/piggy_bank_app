@@ -23,7 +23,9 @@ class DepositBloc implements BlocBase{
   Stream<int> get outSelectedAmount => _selectedDepositAmountController.stream;
 
   Stream<int> get outDepositsAmount {
-    return outDeposits.map((deposits) => deposits.fold<int>(0, (totalAmount, deposit) => totalAmount + deposit.amount));
+    return outDeposits.map(
+      (deposits) => deposits.fold<int>(0, (totalAmount, deposit) => totalAmount + deposit.amount)
+    );
   }
 
   Stream<int> get outDepositsAmountTemp {
@@ -44,6 +46,7 @@ class DepositBloc implements BlocBase{
     final deposit = Deposit(DateTime.now(), _selectedDepositAmount);
     FirestoreDepositService.depositMoney(deposit);
     FirestoreUserService.updateTotal(_selectedDepositAmount,deposit.amount);
+   // FirestoreUserService.updateLastDeposit();
     iotDatabase.set(100);
   }
 

@@ -1,12 +1,13 @@
+import 'package:dram1y/models/deposit.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/home/pages/money_page.dart';
-import 'package:dram1y/src/home/pages/profile_page.dart';
 import 'package:dram1y/src/widgets/dreamName_label.dart';
 import 'package:dram1y/src/widgets/dueDate_label.dart';
 import 'package:dram1y/src/widgets/money_deficit_label.dart';
 import 'package:dram1y/src/widgets/money_today_label.dart';
 import 'package:dram1y/src/widgets/popups/reset_data_when_finished.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -14,7 +15,9 @@ import 'package:firebase_database/firebase_database.dart';
 class DepositPage extends StatefulWidget {
   final UserBloc userBloc;
 
-  const DepositPage({Key key, this.userBloc}) : super(key: key);
+  const DepositPage({Key key, this.userBloc, this.deposit}) : super(key: key);
+
+  final Deposit deposit;
 
   @override
   _DepositPageState createState() => _DepositPageState();
@@ -84,7 +87,7 @@ class _DepositPageState extends State<DepositPage> {
                             DataSnapshot snapshot = snap.data.snapshot;
                             int distance = snapshot.value;
                             if(distance >=10){
-                              return Column(
+                              return Column( 
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
                                   DueDateLabel(),
@@ -162,6 +165,15 @@ class _DepositPageState extends State<DepositPage> {
                                             ),
                                           ],
                                         ),SizedBox(height: 20.0,),
+                                        StreamBuilder<DateTime>(
+                                          stream: userBloc.outSelectedLastDeposit,
+                                          initialData: DateTime.now(),
+                                          builder: (context,snapshot) {
+                                            final date = snapshot.data;
+                                            String formatDate = new DateFormat.yMMMd().format(date);
+                                            return Text('');
+                                          },
+                                        ),
                                         Text(
                                           'Saya Senang',
                                           style: new TextStyle(

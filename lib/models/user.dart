@@ -10,12 +10,14 @@ class User{
   static const yourNameField ='yourName';
   static const totalField = 'total';
   static const molaField = 'mola';
+ // static const lastDepositField = 'lastDposit';
 
-  User(this.lastLoggedIn, this.maxMoneyPerDay, this.dreamName, this.dueDate, this.yourName, this.total, this.mola
+  User(this.lastLoggedIn, this.maxMoneyPerDay, this.dreamName, this.dueDate, this.yourName, this.total, this.mola,
   );
   
   User.temp(){
     this.lastLoggedIn = DateTime.now();
+  //  this.lastDeposit = DateTime.now();
     this.maxMoneyPerDay = 1;
     this.dreamName = "-";
     this.dueDate = DateTime.now();
@@ -31,6 +33,7 @@ class User{
     this.yourName = json[yourNameField];
     this.total = json[totalField];
     this.mola = json[molaField];
+  //  this.lastDeposit = json[lastDepositField];
   }
 
   Map<String, dynamic> toJson(){
@@ -42,12 +45,15 @@ class User{
       yourNameField: this.yourName,
       totalField: this.total,
       molaField: this.mola,
+    //  lastDepositField: this.lastDeposit,
     };
   }
+  
   DateTime lastLoggedIn;
   int maxMoneyPerDay;
   String dreamName;
   DateTime dueDate;
+  //DateTime lastDeposit;
   String yourName;
   int total;
   int mola;
