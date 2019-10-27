@@ -1,13 +1,15 @@
 import 'package:dram1y/models/deposit.dart';
+import 'package:dram1y/models/temp.dart';
 import 'package:dram1y/src/global_blocs/deposit_bloc.dart';
 import 'package:dram1y/src/global_blocs/user_bloc.dart';
 import 'package:dram1y/src/widgets/money_entry_tile.dart';
+import 'package:dram1y/src/widgets/money_entry_tile_temp.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../root_page.dart';
 
-class FixHistoryPage extends StatelessWidget {
+class TempHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final depositBloc = Provider.of<DepositBloc>(context);
@@ -61,8 +63,8 @@ class FixHistoryPage extends StatelessWidget {
                             },
                           );
                         }
-                        else return StreamBuilder<List<Deposit>>(
-                          stream: depositBloc.outDeposits,
+                        else return StreamBuilder<List<DepositTemp>>(
+                          stream: depositBloc.outDepositsTemp,
                           initialData: [],
                           builder: (context, snapshot) {
                             final deposits = snapshot.data;
@@ -70,7 +72,7 @@ class FixHistoryPage extends StatelessWidget {
                               itemCount: deposits.length,
                               itemBuilder: (context,index){
                                 final deposit = deposits[index];
-                                return MoneyEntryTile(deposit: deposit);
+                                return MoneyEntryTileTemp(deposit: deposit);
                               // depositBloc.removeDeposit(deposit);
                                 //return Text("$deposit");
                               },

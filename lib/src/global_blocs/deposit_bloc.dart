@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dram1y/models/deposit.dart';
+import 'package:dram1y/models/temp.dart';
 import 'package:dram1y/service/firestore/firestore_deposit_service.dart';
 import 'package:dram1y/service/firestore/firestore_user_service.dart';
 import 'package:dram1y/src/global_blocs/bloc_base.dart';
@@ -8,11 +9,22 @@ import 'package:rxdart/rxdart.dart';
 
 class DepositBloc implements BlocBase{
   StreamSubscription _depositStreamSubscription;
+  StreamSubscription _depositStreamSubscriptionTemp;
   List<Deposit> _depositsToday = List();
+  List<DepositTemp> _depositsTodayTemp = List();
   int _selectedDepositAmount = 400;
+  int _selectedDepositAmountTemp = 400;
+
   final DatabaseReference iotDatabase = FirebaseDatabase.instance.reference().child("distance");
   var databaseIot = FirebaseDatabase.instance.reference().child("distance");
    
+  final _depositTempController = BehaviorSubject<List<DepositTemp>>();
+  Function(List<DepositTemp>) get _inDepositsTemp => _depositTempController.sink.add;
+  Stream<List<DepositTemp>> get outDepositsTemp => _depositTempController.stream;
+
+  final _selectedDepositTempAmountController = BehaviorSubject<int>();
+  Function(int) get _inSelectedTempAmount => _selectedDepositAmountController.sink.add;
+  Stream<int> get outSelectedTempAmount => _selectedDepositAmountController.stream;
 
   final _depositController = BehaviorSubject<List<Deposit>>();
   Function(List<Deposit>) get _inDeposits => _depositController.sink.add;
@@ -29,22 +41,33 @@ class DepositBloc implements BlocBase{
   }
 
   Stream<int> get outDepositsAmountTemp {
-    return outDeposits.map((deposits) => deposits.fold<int>(0, (totalAmount, deposit) => totalAmount + deposit.amount));
+    return outDepositsTemp.map(
+      (deposits) => deposits.fold<int>(0, (totalAmount, deposit) => totalAmount + deposit.amount)
+    );
   }
 
   Future<void> init() async {
     final depositStream = await FirestoreDepositService.getDepositStream(DateTime.now());
-    _depositStreamSubscription = depositStream.listen((querySnapshot) {
+    final depositStreamTemp = await FirestoreDepositService.getDepositStream(DateTime.now());
+    _depositStreamSubscriptionTemp = depositStream.listen((querySnapshot) {
       _depositsToday = querySnapshot.documents.map((doc) => Deposit.fromDb(doc.data,doc.documentID)).toList();
       _inDeposits(_depositsToday);
     });
 
+    _depositStreamSubscription = depositStreamTemp.listen((querySnapshot) {
+      _depositsTodayTemp = querySnapshot.documents.map((doc) => DepositTemp.fromDb(doc.data,doc.documentID)).toList();
+      _inDepositsTemp(_depositsTodayTemp);
+    });
+
     _inSelectedAmount(_selectedDepositAmount);
+    _inSelectedTempAmount(_selectedDepositAmount);
   }
 
   Future<void> depositMoney() async {
     final deposit = Deposit(DateTime.now(), _selectedDepositAmount);
+    final depositTemp = DepositTemp(DateTime.now(), _selectedDepositAmountTemp);
     FirestoreDepositService.depositMoney(deposit);
+    FirestoreDepositService.depositTempMoney(depositTemp);
     FirestoreUserService.updateTotal(_selectedDepositAmount,deposit.amount);
    // FirestoreUserService.updateLastDeposit();
     iotDatabase.set(100);
@@ -59,6 +82,10 @@ class DepositBloc implements BlocBase{
     FirestoreDepositService.removeDeposit(deposit);
   }
 
+  Future<void> removeDepositTemp(DepositTemp deposits) async {
+    FirestoreDepositService.removeDepositTemp(deposits);
+  }
+
    Future<void> removeCollection() async {
     FirestoreDepositService.removeCollection();
   }
@@ -71,7 +98,9 @@ class DepositBloc implements BlocBase{
   @override
   void dispose(){
     _depositController.close();
+    _depositTempController.close();
     _selectedDepositAmountController.close();
+    _selectedDepositTempAmountController.close();
     _depositStreamSubscription.cancel();
   }
 }

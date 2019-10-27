@@ -46,6 +46,8 @@ class UserBloc implements BlocBase{
 
   Stream<DateTime> get outDueDate => outUser.map((user) => user.dueDate);
 
+  Stream<DateTime> get outLastLogin => outUser.map((user) => user.lastLoggedIn);
+
   //Stream<DateTime> get outlastDeposit => outUser.map((user) => user.lastDeposit);
 
   Future<void> init() async {

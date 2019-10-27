@@ -126,7 +126,7 @@ class ProfilePage extends StatelessWidget {
                                       final maxMoney = snapshot.data;
                                      // int totalz = total + maxMoney;
                                     //  FirestoreUserService.updateTotal(totalz);
-                                      return Text('Rp $total',
+                                      return Text('Rp $maxMoney',
                                         style: new TextStyle(
                                           fontSize: 25,
                                           color: Colors.white,
@@ -155,39 +155,169 @@ class ProfilePage extends StatelessWidget {
                           Row(
                             children: <Widget>[
                               SizedBox(width: 5,),
-                              Container(
-                                width: 150,
-                                height: 150,
-                                color: Colors.transparent,
-                                child: FlatButton(
-                                  child: Image.asset('assets/bintang.png',scale: 1,),
-                                  onPressed: () async {
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: true,
-                                      builder: (context){
-                                        return RewardDreamTargetPopup();
-                                      }
-                                    );
-                                  },
-                                ),
+                              StreamBuilder(
+                                stream: userBloc.outMola ,
+                                initialData: 1 ,
+                                builder: (context, snapshot){
+                                  final mol = snapshot.data;
+                                  if(mol <5 ){
+                                    return Column(children: <Widget>[
+                                      Container(
+                                        width: 150,
+                                        height: 150,
+                                        color: Colors.transparent,
+                                        child: FlatButton(
+                                          child: Image.asset('assets/bintang abu.png',scale: 1,),
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: true,
+                                              builder: (context){
+                                                return RewardDreamTargetPopup();
+                                              }
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],);
+                                  }
+                                  else if (mol < 10)
+                                  {
+                                    return Column(children: <Widget>[
+                                      Container(
+                                        width: 150,
+                                        height: 150,
+                                        color: Colors.transparent,
+                                        child: FlatButton(
+                                          child: Image.asset('assets/bintang merah.png',scale: 1,),
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: true,
+                                              builder: (context){
+                                                return RewardDreamTargetPopup();
+                                              }
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],);
+                                  }
+                                  else if (mol >=10)
+                                  {
+                                    return Column(children: <Widget>[
+                                      Container(
+                                        width: 150,
+                                        height: 150,
+                                        color: Colors.transparent,
+                                        child: FlatButton(
+                                          child: Image.asset('assets/bintang.png',scale: 1,),
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: true,
+                                              builder: (context){
+                                                return RewardDreamTargetPopup();
+                                              }
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],);
+                                  }
+                                },
                               ),
-                              Container(
-                                width: 150,
-                                height: 150,
-                                color: Colors.transparent,
-                                child: FlatButton(
-                                  child: Image.asset('assets/rp.png',scale: 3,),
-                                  onPressed: () async {
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: true,
-                                      builder: (context){
-                                        return RewardTotalTargetPopup();
-                                      }
-                                    );
-                                  },
-                                ),
+                              Row(
+                                children: <Widget>[
+                                  SizedBox(width: 5,),
+                                  StreamBuilder<int>(
+                                    stream: userBloc.outTotal,
+                                    initialData: 0,
+                                    builder: (context,snapshot){
+                                      final total = snapshot.data;
+                                      return StreamBuilder<int>(
+                                        stream: depositBloc.outDepositsAmountTemp,
+                                        initialData: 0,
+                                        builder: (context,snapshot){
+                                          final maxMoney = snapshot.data;
+                                        // int totalz = total + maxMoney;
+                                        //  FirestoreUserService.updateTotal(totalz);
+                                        if(maxMoney<10000)
+                                        {
+                                          return Column(
+                                            children: <Widget>[
+                                              Container(
+                                                width: 150,
+                                                height: 150,
+                                                color: Colors.transparent,
+                                                child: FlatButton(
+                                                  child: Image.asset('assets/rp.png',scale: 3,),
+                                                  onPressed: () async {
+                                                    showDialog(
+                                                      context: context,
+                                                      barrierDismissible: true,
+                                                      builder: (context){
+                                                        return RewardTotalTargetPopup();
+                                                      }
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }
+                                        else if(maxMoney<50000){
+                                          return Column(
+                                            children: <Widget>[
+                                              Container(
+                                                width: 150,
+                                                height: 150,
+                                                color: Colors.transparent,
+                                                child: FlatButton(
+                                                  child: Image.asset('assets/rp merah.png',scale: 3,),
+                                                  onPressed: () async {
+                                                    showDialog(
+                                                      context: context,
+                                                      barrierDismissible: true,
+                                                      builder: (context){
+                                                        return RewardTotalTargetPopup();
+                                                      }
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }
+                                        else if(maxMoney>50000)
+                                        {
+                                          return Column(
+                                            children: <Widget>[
+                                              Container(
+                                                width: 150,
+                                                height: 150,
+                                                color: Colors.transparent,
+                                                child: FlatButton(
+                                                  child: Image.asset('assets/rp.png',scale: 3,),
+                                                  onPressed: () async {
+                                                    showDialog(
+                                                      context: context,
+                                                      barrierDismissible: true,
+                                                      builder: (context){
+                                                        return RewardTotalTargetPopup();
+                                                      }
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
                             ],
                           ),

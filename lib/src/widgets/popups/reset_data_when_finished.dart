@@ -24,7 +24,7 @@ class _ResetDataWhenFinishedState extends State<ResetDataWhenFinished> {
               children: <Widget>[
                 smallSpace,
                 Text(
-                  'Mimpimu Telat Tercapai!',
+                  'Mimpimu Telah Tercapai!',
                   textAlign: TextAlign.center,
                   style: new TextStyle(
                     fontFamily: 'Raleway',fontSize: 25,fontWeight: FontWeight.bold,

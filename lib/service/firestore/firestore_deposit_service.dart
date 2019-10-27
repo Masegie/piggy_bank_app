@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dram1y/models/deposit.dart';
+import 'package:dram1y/models/temp.dart';
 import 'package:dram1y/service/firestore/firestore_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -19,6 +20,7 @@ class FirestoreDepositService {
     .snapshots();
     return depositCollectiontStream;
   }
+
   static Future<void> depositMoney(Deposit deposit) async {
     final firebaseUser = await FirebaseAuth.instance.currentUser();
     final depositCollection = Firestore.instance
@@ -29,7 +31,27 @@ class FirestoreDepositService {
     depositCollection.add(deposit.toJson());
   }
 
+  static Future<void> depositTempMoney(DepositTemp deposits) async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser();
+    final depositTempCollection = Firestore.instance
+      .collection(FirestoreConstants.userCollection)
+      .document(firebaseUser.uid)
+      .collection(FirestoreConstants.depositTempCollection);
+
+    depositTempCollection.add(deposits.toJson());
+  }
+
   static void removeDeposit(Deposit deposit) async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser();
+    Firestore.instance
+      .collection(FirestoreConstants.userCollection)
+      .document(firebaseUser.uid)
+      .collection(FirestoreConstants.depositCollection)
+      .document(deposit.id)
+      .delete();
+  }
+
+  static void removeDepositTemp(DepositTemp deposit) async {
     final firebaseUser = await FirebaseAuth.instance.currentUser();
     Firestore.instance
       .collection(FirestoreConstants.userCollection)

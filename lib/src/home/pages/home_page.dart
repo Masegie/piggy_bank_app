@@ -170,20 +170,48 @@ class _DepositPageState extends State<DepositPage> {
                                           initialData: DateTime.now(),
                                           builder: (context,snapshot) {
                                             final date = snapshot.data;
-                                            String formatDate = new DateFormat.yMMMd().format(date);
-                                            return Text('');
+                                            return StreamBuilder<DateTime>(
+                                              stream: userBloc.outLastLogin,
+                                              builder: (context,snapshot) {
+                                                final tgl = snapshot.data;
+                                                final difference = date.difference(tgl).inDays;
+                                                if (difference >=1 ){
+                                                  return Column(
+                                                    children: <Widget>[
+                                                      Text(
+                                                        'Saya Sedih',
+                                                        style: new TextStyle(
+                                                          fontSize: 30.0,
+                                                          color: Colors.grey,
+                                                          fontFamily: 'Raleway'
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 20.0,),
+                                                      Image.asset('assets/sadGif.gif',scale: 2.5,),
+                                                    ],
+                                                  );
+                                                }
+                                                else{
+                                                  return Column(
+                                                    children: <Widget>[
+                                                      Text(
+                                                        'Saya Senang',
+                                                        style: new TextStyle(
+                                                          fontSize: 30.0,
+                                                          color: Colors.grey,
+                                                          fontFamily: 'Raleway'
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 20.0,),
+                                                      Image.asset('assets/icon_gif.gif',scale: 2.5,),
+                                                    ],
+                                                  );
+                                                }
+                                              },
+                                            );
                                           },
                                         ),
-                                        Text(
-                                          'Saya Senang',
-                                          style: new TextStyle(
-                                            fontSize: 30.0,
-                                            color: Colors.grey,
-                                            fontFamily: 'Raleway'
-                                          ),
-                                        ),
-                                        SizedBox(height: 20.0,),
-                                        Image.asset('assets/icon_gif.gif',scale: 2.5,),
+                                        
                                       ],
                                     ),
                                   ),      
